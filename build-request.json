@@ -1,0 +1,109 @@
+{
+  "kind": "build_request",
+  "title": "Add password-protected Admin/Management area for player management",
+  "projectName": "MultiTiers",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-15",
+      "text": "Add an `addPlayer` update function to the backend Motoko actor (if not already present) that accepts a player name (Text), tier (Tier variant), category (Category variant), and rating score (Nat), creates a new Player record, inserts it into the player map, and returns the newly created Player.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Building the password-protected Admin/Management area now with password 65515616151. It will include a login gate and a form to add players (name, tier, category, rating score) to the list."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The backend exposes an `addPlayer` update function callable from the frontend.",
+        "The function accepts name (Text), tier (Tier), category (Category), and score (Nat) parameters.",
+        "Calling the function persists the new player in the actor's stable player map.",
+        "The newly added player is immediately returned by subsequent `getPlayers` / `getPlayersByTier` queries."
+      ]
+    },
+    {
+      "id": "REQ-16",
+      "text": "Create a new Admin page at the route `/admin` (file `frontend/src/pages/AdminPage.tsx`). On first visit (or when not authenticated), render a full-screen password gate: a centered card with a password input field and a 'Login' button. When the user submits the password `65515616151`, store the authenticated state in React component state (or sessionStorage) and reveal the management UI. If the password is wrong, show an inline error message. Include a 'Logout' button in the management UI that returns to the password gate.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4",
+          "msg-5",
+          "msg-6"
+        ],
+        "quotes": [
+          "ADMIN AREA NEEDS TO BE PROTECTED WITH A PASS WORD MAKE THE PASSWORD 65515616151",
+          "seprate admin/managament area"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Navigating to /admin shows a password input gate before any management UI is visible.",
+        "Entering the correct password (65515616151) grants access to the management area.",
+        "Entering an incorrect password displays a visible error message and does not grant access.",
+        "The authenticated session persists across in-page navigation (e.g. using sessionStorage) but not across full page reloads.",
+        "A Logout button in the management area clears the session and returns to the password gate.",
+        "The admin page follows the existing dark gaming visual theme."
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Inside the Admin management UI (shown after successful password entry), render an 'Add Player' form with the following fields: Player Name (text input), Tier (dropdown/select with all 10 tiers: LT5, HT5, LT4, HT4, LT3, HT3, LT2, HT2, LT1, HT1), Category (dropdown/select with all 8 categories: Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP), and Rating Score (number input). On form submission, call the backend `addPlayer` function via the React Query mutation and show a success notification. Clear the form after a successful submission.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "a form to add players (name, tier, category, rating score) to the list"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The Add Player form displays inputs for name, tier, category, and rating score.",
+        "The tier dropdown lists all 10 tiers (LT5 through HT1).",
+        "The category dropdown lists all 8 categories (Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP).",
+        "Submitting the form with valid data calls the backend addPlayer function.",
+        "A success notification/message is displayed after a player is successfully added.",
+        "The form fields are cleared after a successful submission.",
+        "Validation prevents submission if any required field is empty.",
+        "Added players immediately appear on the Tier List and Leaderboard pages."
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "Register the `/admin` route in `frontend/src/App.tsx` (TanStack Router) so that navigating to `/admin` renders `AdminPage`. Do not add an 'Admin' link to the shared Navbar — the admin area should only be accessible by direct URL.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-3"
+        ],
+        "quotes": [
+          "seprate admin/managament area"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The route /admin is registered in the TanStack Router configuration in App.tsx.",
+        "Navigating directly to /admin renders the AdminPage component.",
+        "The Admin route does not appear in the main Navbar navigation links.",
+        "All existing routes (Home, Tier List, Leaderboard) continue to work correctly."
+      ]
+    }
+  ],
+  "constraints": [
+    "The password must be exactly 65515616151 — do not change or hash it.",
+    "The admin area must not be linked from the main Navbar.",
+    "Do not modify any files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
+    "All Motoko logic must remain in the single backend/main.mo actor file."
+  ],
+  "nonGoals": [
+    "Internet Identity or any external authentication for the admin area.",
+    "Editing or deleting existing players (not requested).",
+    "Role-based access control or multiple admin users.",
+    "Exposing the admin route in the main navigation bar."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

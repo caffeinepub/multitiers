@@ -1,0 +1,16 @@
+{
+  "frontend/src/App.tsx": "Main app with TanStack Router setup, SearchProvider, and four routes (Home, Tier List, Leaderboard, Admin) — the /admin route renders AdminPage without being linked in the Navbar.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations; adds a new `useAddPlayer` mutation hook that calls `actor.addPlayer` and invalidates the `players` query key on success.",
+  "frontend/src/components/Navbar.tsx": "Sticky top navigation bar with MultiTiers logo, nav links (Home, Tier List, Leaderboard), search input, and mobile-responsive hamburger menu.",
+  "frontend/src/components/Footer.tsx": "App footer with MultiTiers branding, copyright year, and caffeine.ai attribution link with UTM tracking.",
+  "frontend/src/components/PlayerCard.tsx": "Individual player card component with TIER_CONFIG updated to define all 10 new tiers (LT5, HT5, LT4, HT4, LT3, HT3, LT2, HT2, LT1, HT1) with distinct vivid accent colors; no S/A/B/C/D references remain.",
+  "frontend/src/components/TierRow.tsx": "Tier row component updated to use the new 10-tier system labels and tier-label CSS classes (e.g. tier-label-lt5, tier-label-ht1); font size reduced slightly to fit the longer tier labels.",
+  "frontend/src/pages/HomePage.tsx": "Homepage updated to display all 10 new tiers in the stats grid, use tier-ht1 as the primary accent, and show a proper empty state when no top players exist.",
+  "frontend/src/pages/TierListPage.tsx": "Tier List page with category filter state using the renamed `CategoryFilterValue` type; renders the `CategoryFilter` component above tier rows and combines category + name search filtering.",
+  "frontend/src/pages/LeaderboardPage.tsx": "Leaderboard page with category filter state using the renamed `CategoryFilterValue` type; renders the `CategoryFilter` component above the leaderboard table and combines category + name search filtering.",
+  "frontend/src/index.css": "Global CSS updated with 10 new tier CSS custom properties (--tier-lt5 through --tier-ht1) and matching tier-label utility classes; all S/A/B/C/D tier variables and classes removed.",
+  "frontend/tailwind.config.js": "Tailwind config updated with 10 new tier color tokens (tier-lt5 through tier-ht1) and matching glow box-shadow utilities; all S/A/B/C/D tier tokens removed.",
+  "frontend/src/lib/SearchContext.tsx": "React Context providing shared searchTerm state and setter, with a SearchProvider wrapper and useSearch hook for consuming components.",
+  "frontend/src/components/CategoryFilter.tsx": "Reusable category filter button group component that renders \"All\" plus 8 category buttons; updated to use `Category.UHC` (replacing the old `Category.UCH`) with the label \"UHC\", using tier-ht1 accent on the active selection.",
+  "frontend/src/pages/AdminPage.tsx": "Password-protected Admin/Management page at /admin; shows a centered password gate (password: 65515616151) with sessionStorage persistence, and after authentication reveals an Add Player form with name, tier, category, and rating score fields that calls the backend via the useAddPlayer mutation."
+}

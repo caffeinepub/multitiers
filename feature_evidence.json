@@ -2,8 +2,8 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-new-admin-page-at-the-route-admin-file-frontend-src-pages-adminpage-tsx-on-first-visit-or-when-not-authenticated-render-a-full-screen-password-gate-a-centered-card-with-a-password-input-field-and-a-login-button-when-the-user-submits-the-password-65515616151-store-the-authenticated-state-in-react-component-state-or-sessionstorage-and-reveal-the-management-ui-if-the-password-is-wrong-show-an-inline-error-message-include-a-logout-button-in-the-management-ui-that-returns-to-the-password-gate",
-      "featureTitle": "Create a new Admin page at the route `/admin` (file `frontend/src/pages/AdminPage.tsx`). On first visit (or when not authenticated), render a full-screen password gate: a centered card with a password input field and a 'Login' button. When the user submits the password `65515616151`, store the authenticated state in React component state (or sessionStorage) and reveal the management UI. If the password is wrong, show an inline error message. Include a 'Logout' button in the management UI that returns to the password gate.",
+      "featureId": "feature-on-the-admin-page-frontend-src-pages-adminpage-tsx-inside-the-management-ui-visible-after-successful-login-display-the-full-current-admin-url-as-a-copyable-text-element-derive-the-url-dynamically-using-window-location-origin-admin-render-it-in-a-styled-read-only-input-or-code-block-accompanied-by-a-copy-button-that-copies-the-url-to-the-clipboard-via-the-clipboard-api-and-shows-a-brief-copied-confirmation-feedback-e-g-for-2-seconds-this-element-should-be-clearly-labelled-e-g-admin-url",
+      "featureTitle": "On the Admin page (`frontend/src/pages/AdminPage.tsx`), inside the management UI (visible after successful login), display the full current `/admin` URL as a copyable text element. Derive the URL dynamically using `window.location.origin + '/admin'`. Render it in a styled read-only input or code block accompanied by a 'Copy' button that copies the URL to the clipboard via the Clipboard API and shows a brief 'Copied!' confirmation feedback (e.g. for 2 seconds). This element should be clearly labelled, e.g. 'Admin URL'.",
       "files": [
         "frontend/src/pages/AdminPage.tsx"
       ],
@@ -15,44 +15,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-16"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-inside-the-admin-management-ui-shown-after-successful-password-entry-render-an-add-player-form-with-the-following-fields-player-name-text-input-tier-dropdown-select-with-all-10-tiers-lt5-ht5-lt4-ht4-lt3-ht3-lt2-ht2-lt1-ht1-category-dropdown-select-with-all-8-categories-sword-axe-crystal-mace-spearmace-diamond-smp-uhc-smp-and-rating-score-number-input-on-form-submission-call-the-backend-addplayer-function-via-the-react-query-mutation-and-show-a-success-notification-clear-the-form-after-a-successful-submission",
-      "featureTitle": "Inside the Admin management UI (shown after successful password entry), render an 'Add Player' form with the following fields: Player Name (text input), Tier (dropdown/select with all 10 tiers: LT5, HT5, LT4, HT4, LT3, HT3, LT2, HT2, LT1, HT1), Category (dropdown/select with all 8 categories: Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP), and Rating Score (number input). On form submission, call the backend `addPlayer` function via the React Query mutation and show a success notification. Clear the form after a successful submission.",
-      "files": [
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/AdminPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-17"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-register-the-admin-route-in-frontend-src-app-tsx-tanstack-router-so-that-navigating-to-admin-renders-adminpage-do-not-add-an-admin-link-to-the-shared-navbar-the-admin-area-should-only-be-accessible-by-direct-url",
-      "featureTitle": "Register the `/admin` route in `frontend/src/App.tsx` (TanStack Router) so that navigating to `/admin` renders `AdminPage`. Do not add an 'Admin' link to the shared Navbar — the admin area should only be accessible by direct URL.",
-      "files": [
-        "frontend/src/App.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-18"
+        "REQ-19"
       ],
       "confidence": "high"
     }

@@ -12,5 +12,5 @@
   "frontend/tailwind.config.js": "Tailwind config updated with 10 new tier color tokens (tier-lt5 through tier-ht1) and matching glow box-shadow utilities; all S/A/B/C/D tier tokens removed.",
   "frontend/src/lib/SearchContext.tsx": "React Context providing shared searchTerm state and setter, with a SearchProvider wrapper and useSearch hook for consuming components.",
   "frontend/src/components/CategoryFilter.tsx": "Reusable category filter button group component that renders \"All\" plus 8 category buttons; updated to use `Category.UHC` (replacing the old `Category.UCH`) with the label \"UHC\", using tier-ht1 accent on the active selection.",
-  "frontend/src/pages/AdminPage.tsx": "Password-protected Admin/Management page at /admin; shows a centered password gate (password: 65515616151) with sessionStorage persistence, and after authentication reveals an Add Player form with name, tier, category, and rating score fields that calls the backend via the useAddPlayer mutation."
+  "frontend/src/pages/AdminPage.tsx": "Password-protected Admin page at /admin with a password gate (65515616151), an Add Player form, and a new AdminUrlCard component that displays the full /admin URL in a monospace read-only box with a Copy button that shows \"Copied!\" feedback for 2 seconds — the URL card is only visible after authentication."
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 11,
+  "projectStateVersion": 13,
   "summary": "Building 'MultiTiers', a website similar to MC Tiers — a tier-ranking/leaderboard platform for Minecraft players. The tier system is LT5/HT5/LT4/HT4/LT3/HT3/LT2/HT2/LT1/HT1. The leaderboard/tier list shows no entries by default. A Category filter (Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP) is being added to the Tier List and Leaderboard pages, with an 'All' default view. A password-protected Admin/Management area is being added for adding and managing players.",
   "architectural_notes": [
     "Project name is 'MultiTiers', inspired by MC Tiers — a competitive tier ranking website",
@@ -121,6 +121,14 @@
         "REQ-18"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-on-the-admin-page-frontend-src-pages-adminpage-tsx-inside-the-management-ui-visible-after-successful-login-display-the-full-current-admin-url-as-a-copyable-text-element-derive-the-url-dynamically-using-window-location-origin-admin-render-it-in-a-styled-read-only-input-or-code-block-accompanied-by-a-copy-button-that-copies-the-url-to-the-clipboard-via-the-clipboard-api-and-shows-a-brief-copied-confirmation-feedback-e-g-for-2-seconds-this-element-should-be-clearly-labelled-e-g-admin-url",
+      "title": "On the Admin page (`frontend/src/pages/AdminPage.tsx`), inside the management UI (visible after successful login), display the full current `/admin` URL as a copyable text element. Derive the URL dynamically using `window.location.origin + '/admin'`. Render it in a styled read-only input or code block accompanied by a 'Copy' button that copies the URL to the clipboard via the Clipboard API and shows a brief 'Copied!' confirmation feedback (e.g. for 2 seconds). This element should be clearly labelled, e.g. 'Admin URL'.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -176,6 +184,12 @@
       "reqIds": [
         "REQ-15"
       ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Display the full /admin URL as a clickable, copyable link on the Admin page so users can easily copy and paste it",
+      "reqIds": [],
       "status": "pending"
     }
   ],

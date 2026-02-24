@@ -1,5 +1,5 @@
 import { useState, useEffect, FormEvent } from 'react';
-import { Shield, LogOut, UserPlus, CheckCircle, AlertCircle, Lock } from 'lucide-react';
+import { Shield, LogOut, UserPlus, CheckCircle, AlertCircle, Lock, Copy, Check, Link2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -103,6 +103,61 @@ function PasswordGate({ onAuthenticated }: { onAuthenticated: () => void }) {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function AdminUrlCard() {
+  const [copied, setCopied] = useState(false);
+  const adminUrl = `${window.location.origin}/admin`;
+
+  function handleCopy() {
+    navigator.clipboard.writeText(adminUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  return (
+    <Card className="border-border bg-card shadow-lg mt-6">
+      <CardHeader className="border-b border-border pb-4">
+        <div className="flex items-center gap-2">
+          <Link2 className="h-5 w-5 text-tier-ht1" />
+          <CardTitle className="text-lg text-foreground">Admin URL</CardTitle>
+        </div>
+        <CardDescription className="text-muted-foreground">
+          Share or bookmark this link to access the admin panel directly.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-5">
+        <div className="flex items-center gap-2">
+          <div className="flex-1 rounded-md border border-border bg-background px-3 py-2 font-mono text-sm text-foreground overflow-x-auto whitespace-nowrap select-all">
+            {adminUrl}
+          </div>
+          <Button
+            type="button"
+            onClick={handleCopy}
+            size="sm"
+            className={`shrink-0 transition-all ${
+              copied
+                ? 'bg-green-600 hover:bg-green-600 text-white'
+                : 'bg-tier-ht1 hover:bg-tier-ht1/90 text-white'
+            }`}
+          >
+            {copied ? (
+              <>
+                <Check className="mr-1.5 h-4 w-4" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Copy className="mr-1.5 h-4 w-4" />
+                Copy
+              </>
+            )}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -315,6 +370,9 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
           </form>
         </CardContent>
       </Card>
+
+      {/* Admin URL Card */}
+      <AdminUrlCard />
     </div>
   );
 }

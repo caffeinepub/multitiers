@@ -1,14 +1,42 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-24T22:06:53.046Z",
-  "summary": "The diff implements all requirements from REQ-19 in AdminPage.tsx. The AdminUrlCard component displays the full /admin URL derived from window.location.origin + '/admin', uses a monospace read-only display, includes a Copy button using the Clipboard API, shows 'Copied!' feedback for 2 seconds, is styled consistently with the dark gaming theme, and is only visible after authentication. All constraints are respected: hooks are untouched, no Admin link added to Navbar, and changes are confined to AdminPage.tsx.",
-  "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.95,
+  "generatedAt": "2026-02-24T22:39:58.449Z",
+  "summary": "The diff implements most requirements well. REQ-22 (backend no-op redeployment) is addressed with a comment added to main.mo. REQ-23 through REQ-28 are largely implemented with polished UI components. However, REQ-26's delete player functionality is explicitly removed (noted in file summaries: 'delete functionality removed since the backend has no deletePlayer method'), meaning the player list rows cannot show a delete button as required. All other requirements appear substantially addressed.",
+  "missing_requirements": [
+    {
+      "requirement": "Player list rows in AdminModal must show a delete button; the modal must include delete player functionality per the AC 'Player list rows are readable with name, tier, category, score, and delete button'",
+      "reason": "The file summary for AdminModal.tsx explicitly states 'delete functionality removed since the backend has no deletePlayer method.' The AC for REQ-26 requires a delete button in each player list row, but this has been removed.",
+      "evidence": [
+        "frontend/src/components/AdminModal.tsx",
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "A dedicated /admin route (AdminPage) with an AdminUrlCard component that displays the full /admin URL in a monospace read-only box with a Copy button showing 'Copied!' feedback",
+      "reason": "The build request does not mention creating a new /admin page, an AdminUrlCard component, or a URL copy feature. The spec only requires polishing the existing AdminModal component.",
+      "evidence": [
+        "frontend-file-summaries.txt"
+      ]
+    }
+  ],
+  "confidence": 0.82,
   "changed_files": [
+    "backend/main.mo",
     "frontend-file-summaries.txt",
-    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/components/AdminModal.tsx",
+    "frontend/src/components/CategoryFilter.tsx",
+    "frontend/src/components/Footer.tsx",
+    "frontend/src/components/Navbar.tsx",
+    "frontend/src/components/PlayerCard.tsx",
+    "frontend/src/components/TierRow.tsx",
+    "frontend/src/index.css",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/LeaderboardPage.tsx",
+    "frontend/src/pages/TierListPage.tsx",
+    "frontend/tailwind.config.js",
     "project_state.json"
   ]
 }

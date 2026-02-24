@@ -40,10 +40,10 @@ export default function CategoryFilter({ selectedCategory, onCategoryChange }: C
             key={cat}
             onClick={() => onCategoryChange(cat)}
             className={`
-              px-3 py-1.5 text-xs font-black uppercase tracking-widest rounded border transition-all duration-150
+              px-3.5 py-1.5 text-xs font-black uppercase tracking-widest rounded-md border transition-all duration-150
               ${isActive
-                ? 'bg-tier-ht1 border-tier-ht1 text-app-bg shadow-glow-ht1'
-                : 'bg-app-surface border-white/10 text-app-muted hover:border-tier-ht1/50 hover:text-app-fg'
+                ? 'bg-tier-ht1 border-tier-ht1 text-app-bg shadow-glow-ht1 scale-105'
+                : 'bg-app-surface border-white/15 text-app-muted hover:border-tier-ht1/50 hover:text-app-fg hover:bg-app-surface2'
               }
             `}
           >

@@ -1,42 +1,178 @@
 {
   "kind": "build_request",
-  "title": "Display copyable /admin URL on the Admin page",
+  "title": "Fix backend canister + full UI/UX polish sweep",
   "projectName": "MultiTiers",
-  "priority": "normal",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-19",
-      "text": "On the Admin page (`frontend/src/pages/AdminPage.tsx`), inside the management UI (visible after successful login), display the full current `/admin` URL as a copyable text element. Derive the URL dynamically using `window.location.origin + '/admin'`. Render it in a styled read-only input or code block accompanied by a 'Copy' button that copies the URL to the clipboard via the Clipboard API and shows a brief 'Copied!' confirmation feedback (e.g. for 2 seconds). This element should be clearly labelled, e.g. 'Admin URL'.",
-      "target": "frontend",
+      "id": "REQ-22",
+      "text": "Redeploy the backend Motoko actor with a no-op change (e.g. add or update a comment) to force a fresh canister deployment and bring it out of the stopped state, ensuring all update calls (addPlayer, deletePlayer) and all query calls are operational again.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-recent"
+          "msg-4",
+          "msg-5",
+          "msg-6"
         ],
         "quotes": [
-          "can you just make it so i can just copy and past",
-          "it"
+          "Canister koqvn-dqaaa-aaaaa-qfjaq-cai is stopped",
+          "fix the stopped canister issue",
+          "2 yes"
         ]
       },
       "acceptanceCriteria": [
-        "The Admin management UI (post-login) displays a labelled 'Admin URL' section showing the full URL ending in /admin.",
-        "The displayed URL is derived from window.location.origin + '/admin' so it works in both local and production environments.",
-        "A 'Copy' button is present next to the URL.",
-        "Clicking 'Copy' copies the URL to the clipboard using the Clipboard API.",
-        "After clicking 'Copy', the button temporarily shows 'Copied!' feedback for approximately 2 seconds before reverting.",
-        "The URL text is visually styled to stand out (e.g. monospace font, distinct background) consistent with the dark gaming theme.",
-        "The element is only visible inside the authenticated admin management UI, not on the password gate screen."
+        "The backend canister is in a running state after deployment",
+        "Calling addPlayer succeeds without IC0508 rejection",
+        "All query endpoints (getAllPlayers, getPlayersByTier, searchPlayers) return results without error"
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "text": "Redesign the Home page (frontend/src/pages/HomePage.tsx) with improved visual hierarchy: a more impactful hero section with a prominent tagline, polished per-tier stat cards with glowing accent borders matching each tier color, a cleaner top-3 preview section with improved card layout, and better spacing and typography throughout. Ensure the admin access button is clearly visible but visually integrated into the design.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11"
+        ],
+        "quotes": [
+          "just fix everything and make it better",
+          "improve the Home page"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hero section has a compelling headline and subtext with strong visual presence",
+        "Per-tier stat cards display tier colors with subtle glow effects",
+        "Top-3 preview section is clearly laid out with player name, tier badge, and score visible",
+        "Admin access button is visible and styled consistently with the gaming theme",
+        "Page looks polished and professional on both desktop and mobile"
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "text": "Polish the Tier List page (frontend/src/pages/TierListPage.tsx) and TierRow component (frontend/src/components/TierRow.tsx): improve the tier label design with stronger glow/gradient effects matching each tier's accent color, enhance player card layout in PlayerCard.tsx with better spacing and hover effects, improve the empty-state message styling, and refine the category filter integration visually.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11"
+        ],
+        "quotes": [
+          "just fix everything and make it better",
+          "polish the UI across all pages"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Tier label badges have vivid glow/gradient effects per tier color",
+        "Player cards have visible hover states (scale or glow effect)",
+        "Empty-state message is styled and readable when no players exist",
+        "Category filter bar is visually polished and clearly shows the active selection",
+        "Layout is responsive and readable on all screen sizes"
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "text": "Polish the Leaderboard page (frontend/src/pages/LeaderboardPage.tsx): redesign the ranked table with alternating row highlights, stronger rank number badges (with gold/silver/bronze styling for top 3 positions), better tier badge styling in each row, improved column headers, hover effects on rows, and a polished empty-state view when no players exist.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11"
+        ],
+        "quotes": [
+          "just fix everything and make it better",
+          "polish the UI across all pages"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Top 3 rank positions have gold, silver, bronze styled number badges",
+        "Table rows have subtle hover highlight effect",
+        "Tier badges in each row use the correct tier accent color",
+        "Column headers are bold and clearly readable",
+        "Empty state is styled with an informative message",
+        "Category filter is visually consistent with the Tier List page filter"
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "text": "Polish the AdminModal component (frontend/src/components/AdminModal.tsx): improve the modal's visual design with a more refined dark card, better form field styling (inputs, selects with consistent dark theme), clearer success/error notification styling, improved player list section with better row layout and delete button styling, and a more prominent logout button. Ensure the modal scrolls properly when the player list is long.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11"
+        ],
+        "quotes": [
+          "just fix everything and make it better",
+          "improve the Admin modal"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Modal card has a polished dark background with subtle border",
+        "All form inputs and selects have consistent dark-themed styling",
+        "Success notification is visually distinct (e.g. green accent)",
+        "Error messages are clearly styled in red/destructive color",
+        "Player list rows are readable with name, tier, category, score, and delete button",
+        "Modal body scrolls independently when content overflows",
+        "Logout button is clearly visible at bottom or top of the management UI"
+      ]
+    },
+    {
+      "id": "REQ-27",
+      "text": "Polish the Navbar component (frontend/src/components/Navbar.tsx): improve active link highlighting, refine the search input styling to match the dark gaming theme, improve mobile menu appearance, and add a subtle border or gradient line at the bottom of the navbar to separate it from page content.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11"
+        ],
+        "quotes": [
+          "just fix everything and make it better",
+          "improve visual design"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Active navigation link is clearly highlighted with the HT1 accent color or an underline indicator",
+        "Search input has consistent dark-themed styling with a visible placeholder",
+        "Mobile hamburger menu opens and closes cleanly with styled links",
+        "Navbar has a visible bottom separator line or gradient",
+        "Logo/brand area is visually prominent"
+      ]
+    },
+    {
+      "id": "REQ-28",
+      "text": "Polish the CategoryFilter component (frontend/src/components/CategoryFilter.tsx): improve button sizing, spacing, and active state styling so the selected category is immediately obvious; add a subtle hover state on inactive buttons; ensure the filter bar wraps cleanly on smaller screens.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-10",
+          "msg-11"
+        ],
+        "quotes": [
+          "just fix everything and make it better",
+          "improve visual design"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Active category button has a clear filled/glowing style distinct from inactive buttons",
+        "Inactive buttons have a visible hover effect",
+        "Buttons wrap onto multiple lines on small screens without breaking layout",
+        "All 9 options (All + 8 categories) are visible and readable"
       ]
     }
   ],
   "constraints": [
-    "Do not modify any file under frontend/src/hooks/ (immutable paths).",
-    "Do not add an Admin link to the Navbar.",
-    "Keep all changes within AdminPage.tsx only."
+    "Do not change the password (65515616151) for the admin gate",
+    "Do not modify files in frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
+    "Preserve all existing features: 10-tier system, category filter, admin modal, player add/delete, search, leaderboard, tier list",
+    "Do not alter the backend data schema or Player type structure"
   ],
   "nonGoals": [
-    "Adding any new backend logic.",
-    "Changing the password or authentication flow.",
-    "Modifying any other page or component."
+    "Adding new pages or routes beyond what already exists",
+    "Changing the tier system or category list",
+    "Adding new backend functions or changing the backend API",
+    "Adding Internet Identity or any authentication beyond the password gate",
+    "Changing the admin password"
   ],
   "imageRequirements": {
     "required": [],

@@ -23,15 +23,15 @@ export default function PlayerCard({ player, rank }: PlayerCardProps) {
 
   return (
     <div
-      className={`relative flex flex-col items-center gap-2 p-3 rounded-lg border bg-card-bg ${config.bg} hover:scale-105 transition-transform duration-150 cursor-default min-w-[100px] group`}
+      className={`relative flex flex-col items-center gap-2 p-3 rounded-lg border bg-card-bg ${config.bg} hover:scale-105 hover:shadow-card transition-all duration-200 cursor-default min-w-[100px] group`}
     >
       {rank !== undefined && (
         <span className="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-app-surface border border-white/20 flex items-center justify-center text-[10px] font-black text-app-muted">
           {rank}
         </span>
       )}
-      {/* Avatar placeholder */}
-      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black border-2 ${config.bg} ${config.color}`}>
+      {/* Avatar */}
+      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black border-2 ${config.bg} ${config.color} group-hover:shadow-${config.glow.replace('shadow-', '')} transition-shadow`}>
         {player.name.charAt(0).toUpperCase()}
       </div>
       {/* Name */}
@@ -43,7 +43,7 @@ export default function PlayerCard({ player, rank }: PlayerCardProps) {
         {Number(player.score).toLocaleString()}
       </span>
       {/* Tier badge */}
-      <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-sm border ${config.bg} ${config.color}`}>
+      <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded border ${config.bg} ${config.color}`}>
         {config.label}
       </span>
     </div>

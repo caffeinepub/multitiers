@@ -6,7 +6,7 @@ import Order "mo:core/Order";
 import Runtime "mo:core/Runtime";
 import Text "mo:core/Text";
 
-
+// This is a no-op change to force redeployment of the non-responding canister
 
 actor {
   module Player {

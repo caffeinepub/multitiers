@@ -11,7 +11,7 @@ export default function TierRow({ tier, players }: TierRowProps) {
   const tierKey = tier.toLowerCase();
 
   return (
-    <div className="flex gap-0 rounded-lg overflow-hidden border border-white/10">
+    <div className="flex gap-0 rounded-lg overflow-hidden border border-white/10 shadow-glow-sm">
       {/* Tier Label */}
       <div
         className={`flex-shrink-0 w-16 sm:w-20 flex items-center justify-center font-black text-xl sm:text-2xl tracking-tight ${config.color} tier-label-${tierKey}`}
@@ -21,10 +21,10 @@ export default function TierRow({ tier, players }: TierRowProps) {
       </div>
 
       {/* Players */}
-      <div className="flex-1 bg-app-surface/50 p-3 border-l border-white/10">
+      <div className="flex-1 bg-app-surface/40 p-3 border-l border-white/10">
         {players.length === 0 ? (
           <div className="flex items-center h-full min-h-[96px]">
-            <span className="text-app-muted text-sm italic">No players in this tier</span>
+            <span className="text-app-muted/60 text-sm italic font-medium">— No players in this tier —</span>
           </div>
         ) : (
           <div className="flex flex-wrap gap-3">

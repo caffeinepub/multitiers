@@ -1,13 +1,15 @@
 # Specification
 
 ## Summary
-**Goal:** Display the full `/admin` URL as a copyable element inside the authenticated Admin management UI.
+**Goal:** Fix the stopped backend canister and perform a full UI/UX polish sweep across all pages and components of the MultiTiers app.
 
 **Planned changes:**
-- Add a labelled "Admin URL" section inside the post-login admin management UI in `AdminPage.tsx`
-- Derive the URL dynamically using `window.location.origin + '/admin'`
-- Render the URL in a styled read-only input or code block with a monospace font and distinct background matching the dark gaming theme
-- Add a "Copy" button that copies the URL to the clipboard via the Clipboard API
-- Show a brief "Copied!" confirmation on the button for ~2 seconds after clicking, then revert to "Copy"
+- Redeploy the backend Motoko actor with a no-op change to bring the canister out of its stopped state, restoring all update and query calls
+- Redesign the Home page with a more impactful hero section, glowing per-tier stat cards, and improved top-3 preview layout
+- Polish the Tier List page and TierRow/PlayerCard components with stronger tier glow/gradient effects, better hover states, and improved empty-state styling
+- Polish the Leaderboard page with gold/silver/bronze rank badges, alternating row highlights, hover effects, and improved tier badge styling
+- Polish the AdminModal with refined dark card styling, consistent form input/select theming, distinct success/error notifications, scrollable player list, and prominent logout button
+- Polish the Navbar with active link highlighting, dark-themed search input, improved mobile menu, and a bottom separator line
+- Polish the CategoryFilter with clear active/inactive button states, hover effects, and responsive wrapping
 
-**User-visible outcome:** Admins can see their full admin page URL displayed in the management UI and copy it to the clipboard with a single click.
+**User-visible outcome:** The backend canister is fully operational again, and every page and component in the app has a visually polished, consistent dark gaming aesthetic with improved typography, spacing, and interactive states across desktop and mobile.

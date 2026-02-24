@@ -53,6 +53,7 @@ interface AddPlayerInput {
   tier: Tier;
   category: Category;
   score: bigint;
+  avatarUrl?: string | null;
 }
 
 export function useAddPlayer() {
@@ -60,9 +61,24 @@ export function useAddPlayer() {
   const queryClient = useQueryClient();
 
   return useMutation<Player, Error, AddPlayerInput>({
-    mutationFn: async ({ name, tier, category, score }) => {
+    mutationFn: async ({ name, tier, category, score, avatarUrl }) => {
       if (!actor) throw new Error('Actor not initialized');
-      return actor.addPlayer(name, tier, score, category);
+      return actor.addPlayer(name, tier, score, category, avatarUrl ?? null);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['players'] });
+    },
+  });
+}
+
+export function useRemovePlayer() {
+  const { actor } = useActor();
+  const queryClient = useQueryClient();
+
+  return useMutation<void, Error, bigint>({
+    mutationFn: async (playerId: bigint) => {
+      if (!actor) throw new Error('Actor not initialized');
+      return actor.removePlayer(playerId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['players'] });

@@ -12,7 +12,11 @@ export interface Player {
     name: string;
     tier: Tier;
     score: bigint;
+    avatarUrl?: string;
     category: Category;
+}
+export interface UserProfile {
+    name: string;
 }
 export enum Category {
     Axe = "Axe",
@@ -36,11 +40,23 @@ export enum Tier {
     LT4 = "LT4",
     LT5 = "LT5"
 }
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
+}
 export interface backendInterface {
-    addPlayer(name: string, tier: Tier, score: bigint, category: Category): Promise<Player>;
+    addPlayer(name: string, tier: Tier, score: bigint, category: Category, avatarUrl: string | null): Promise<Player>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     getAllPlayers(): Promise<Array<Player>>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
     getPlayersByCategory(category: Category): Promise<Array<Player>>;
     getPlayersByTier(tier: Tier): Promise<Array<Player>>;
     getPlayersByTierAndCategory(tier: Tier, category: Category): Promise<Array<Player>>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    removePlayer(playerId: bigint): Promise<void>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
     searchPlayersByName(searchTerm: string): Promise<Array<Player>>;
 }

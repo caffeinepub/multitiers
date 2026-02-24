@@ -1,9 +1,9 @@
 {
   "frontend/src/App.tsx": "Main app with TanStack Router setup, SearchProvider, and four routes (Home, Tier List, Leaderboard, Admin) — the /admin route renders AdminPage without being linked in the Navbar.",
-  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations; adds a new `useAddPlayer` mutation hook that calls `actor.addPlayer` and invalidates the `players` query key on success.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations; updated `useAddPlayer` to accept an optional `avatarUrl` parameter and pass it to the backend, and added a new `useRemovePlayer` mutation that calls `actor.removePlayer` and invalidates all player queries on success.",
   "frontend/src/components/Navbar.tsx": "Sticky navbar with active link underline indicator using tier-ht1 color, improved search input styling with app-surface background, polished mobile menu with border separator and better link styling, and fixed tier color references.",
   "frontend/src/components/Footer.tsx": "App footer with fixed tier color references (tier-ht1 for brand, tier-ht2 for heart icon), Heart icon from lucide-react, and caffeine.ai attribution link.",
-  "frontend/src/components/PlayerCard.tsx": "Individual player card with improved hover effects (scale + shadow-card transition) for better visual feedback.",
+  "frontend/src/components/PlayerCard.tsx": "Individual player card that displays the player's Minecraft skin avatar image from `avatarUrl` when available (with an error fallback to the initial-based circle avatar), plus name, score, and tier badge with tier-specific colors and hover effects.",
   "frontend/src/components/TierRow.tsx": "Tier row with enhanced empty-state text styling and shadow-glow-sm on the container for subtle depth.",
   "frontend/src/pages/HomePage.tsx": "Redesigned Home page with background glow hero, player count pill, improved tier breakdown grid with button styling, enhanced top-3 cards showing category info, polished CTA section with background glow, and styled Admin Panel button.",
   "frontend/src/pages/TierListPage.tsx": "Tier List page with category filter wrapped in a styled container panel, improved header with icon badge, better empty/error states with icons, and tiers ordered HT1→LT5.",
@@ -12,6 +12,6 @@
   "frontend/tailwind.config.js": "Tailwind config with updated app semantic tokens (app-surface2 added), enhanced tier glow box-shadows, new glow-ht1/glow-sm/card shadow utilities, and success color token mapping.",
   "frontend/src/lib/SearchContext.tsx": "React Context providing shared searchTerm state and setter, with a SearchProvider wrapper and useSearch hook for consuming components.",
   "frontend/src/components/CategoryFilter.tsx": "Category filter button group with improved sizing, scale effect on active button, hover effects on inactive buttons, and rounded-md styling.",
-  "frontend/src/pages/AdminPage.tsx": "Password-protected Admin page at /admin with a password gate (65515616151), an Add Player form, and a new AdminUrlCard component that displays the full /admin URL in a monospace read-only box with a Copy button that shows \"Copied!\" feedback for 2 seconds — the URL card is only visible after authentication.",
+  "frontend/src/pages/AdminPage.tsx": "Password-protected Admin page with an Add Player form that includes a Minecraft username field with debounced skin preview (via mc-heads.net), a scrollable Current Players list with per-player remove buttons (with confirmation and loading spinner), and the Admin URL card — all behind the existing password gate.",
   "frontend/src/components/AdminModal.tsx": "Password-gated admin modal with Add Player form (all 10 tiers, 8 categories, name, score) and a scrollable player list showing all current players with their tier/category/score — delete functionality removed since the backend has no deletePlayer method."
 }

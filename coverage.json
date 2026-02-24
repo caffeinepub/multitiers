@@ -1,111 +1,82 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-24T22:39:58.452Z",
+  "generatedAt": "2026-02-24T23:11:41.052Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 7,
-    "implemented": 6,
+    "total": 4,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-22",
-        "summary": "Redeploy the backend Motoko actor with a no-op change (e.g. add or update a comment) to force a fresh canister deployment and bring it out of the stopped state, ensuring all update calls (addPlayer, deletePlayer) and all query calls are operational again.",
+        "id": "REQ-1",
+        "summary": "Update the backend player data model to store an optional Minecraft skin URL (or avatar URL) field alongside existing tier/category/score fields. Update addPlayer and any relevant query methods to include this field.",
         "status": "unknown",
         "plannedFiles": [],
         "matchedFiles": []
       },
       {
-        "id": "REQ-23",
-        "summary": "Redesign the Home page (frontend/src/pages/HomePage.tsx) with improved visual hierarchy: a more impactful hero section with a prominent tagline, polished per-tier stat cards with glowing accent borders matching each tier color, a cleaner top-3 preview section with improved card layout, and better spacing and typography throughout. Ensure the admin access button is clearly visible but visually integrated into the design.",
+        "id": "REQ-2",
+        "summary": "Update the admin panel (AdminPage.tsx and/or AdminModal.tsx) so that when a Minecraft username is entered to add a player, the frontend automatically fetches the player's skin avatar using the Mojang API (https://mc-heads.net/avatar/{username} or equivalent public endpoint) and stores the resulting URL as the player's avatar. The avatar preview should be shown in the add-player form before submission.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/components/AdminModal.tsx",
+          "frontend/src/pages/AdminPage.tsx",
+          "frontend/src/hooks/useQueries.ts"
         ],
         "matchedFiles": [
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/pages/AdminPage.tsx",
+          "frontend/src/hooks/useQueries.ts"
         ]
       },
       {
-        "id": "REQ-24",
-        "summary": "Polish the Tier List page (frontend/src/pages/TierListPage.tsx) and TierRow component (frontend/src/components/TierRow.tsx): improve the tier label design with stronger glow/gradient effects matching each tier's accent color, enhance player card layout in PlayerCard.tsx with better spacing and hover effects, improve the empty-state message styling, and refine the category filter integration visually.",
+        "id": "REQ-3",
+        "summary": "Add a remove player button in the admin panel (AdminPage.tsx) next to each player in the current player list. Clicking it should delete that player from the backend and update the displayed list.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/TierListPage.tsx",
-          "frontend/src/components/TierRow.tsx",
+          "frontend/src/components/AdminModal.tsx",
+          "frontend/src/pages/AdminPage.tsx",
+          "frontend/src/hooks/useQueries.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/AdminPage.tsx",
+          "frontend/src/hooks/useQueries.ts"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Update the PlayerCard component and TierRow/TierListPage to display each player's Minecraft skin avatar image (from the stored avatarUrl) as their profile picture instead of (or in addition to) the initial-based avatar. Fall back to the initial-based avatar if no avatarUrl is present.",
+        "status": "implemented",
+        "plannedFiles": [
           "frontend/src/components/PlayerCard.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/TierListPage.tsx",
-          "frontend/src/components/TierRow.tsx",
           "frontend/src/components/PlayerCard.tsx"
-        ]
-      },
-      {
-        "id": "REQ-25",
-        "summary": "Polish the Leaderboard page (frontend/src/pages/LeaderboardPage.tsx): redesign the ranked table with alternating row highlights, stronger rank number badges (with gold/silver/bronze styling for top 3 positions), better tier badge styling in each row, improved column headers, hover effects on rows, and a polished empty-state view when no players exist.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/pages/LeaderboardPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/pages/LeaderboardPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-26",
-        "summary": "Polish the AdminModal component (frontend/src/components/AdminModal.tsx): improve the modal's visual design with a more refined dark card, better form field styling (inputs, selects with consistent dark theme), clearer success/error notification styling, improved player list section with better row layout and delete button styling, and a more prominent logout button. Ensure the modal scrolls properly when the player list is long.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/AdminModal.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/AdminModal.tsx"
-        ]
-      },
-      {
-        "id": "REQ-27",
-        "summary": "Polish the Navbar component (frontend/src/components/Navbar.tsx): improve active link highlighting, refine the search input styling to match the dark gaming theme, improve mobile menu appearance, and add a subtle border or gradient line at the bottom of the navbar to separate it from page content.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/Navbar.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/Navbar.tsx"
-        ]
-      },
-      {
-        "id": "REQ-28",
-        "summary": "Polish the CategoryFilter component (frontend/src/components/CategoryFilter.tsx): improve button sizing, spacing, and active state styling so the selected category is immediately obvious; add a subtle hover state on inactive buttons; ensure the filter bar wraps cleanly on smaller screens.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/CategoryFilter.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/CategoryFilter.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/authorization/MixinAuthorization.mo",
+    "backend/authorization/access-control.mo",
     "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
+    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/AdminModal.tsx",
-    "frontend/src/components/CategoryFilter.tsx",
-    "frontend/src/components/Footer.tsx",
-    "frontend/src/components/Navbar.tsx",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/PlayerCard.tsx",
-    "frontend/src/components/TierRow.tsx",
-    "frontend/src/index.css",
-    "frontend/src/pages/HomePage.tsx",
-    "frontend/src/pages/LeaderboardPage.tsx",
-    "frontend/src/pages/TierListPage.tsx",
-    "frontend/tailwind.config.js",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/utils/urlParams.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

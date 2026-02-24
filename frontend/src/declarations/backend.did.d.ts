@@ -23,6 +23,7 @@ export interface Player {
   'name' : string,
   'tier' : Tier,
   'score' : bigint,
+  'avatarUrl' : [] | [string],
   'category' : Category,
 }
 export type Tier = { 'HT1' : null } |
@@ -35,12 +36,27 @@ export type Tier = { 'HT1' : null } |
   { 'LT3' : null } |
   { 'LT4' : null } |
   { 'LT5' : null };
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _SERVICE {
-  'addPlayer' : ActorMethod<[string, Tier, bigint, Category], Player>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'addPlayer' : ActorMethod<
+    [string, Tier, bigint, Category, [] | [string]],
+    Player
+  >,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'getAllPlayers' : ActorMethod<[], Array<Player>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getPlayersByCategory' : ActorMethod<[Category], Array<Player>>,
   'getPlayersByTier' : ActorMethod<[Tier], Array<Player>>,
   'getPlayersByTierAndCategory' : ActorMethod<[Tier, Category], Array<Player>>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'removePlayer' : ActorMethod<[bigint], undefined>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
   'searchPlayersByName' : ActorMethod<[string], Array<Player>>,
 }
 export declare const idlService: IDL.ServiceClass;

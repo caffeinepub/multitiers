@@ -1,12 +1,16 @@
-import { useState, useEffect, FormEvent } from 'react';
-import { Shield, LogOut, UserPlus, CheckCircle, AlertCircle, Lock, Copy, Check, Link2 } from 'lucide-react';
+import { useState, useEffect, useRef, FormEvent } from 'react';
+import {
+  Shield, LogOut, UserPlus, CheckCircle, AlertCircle, Lock,
+  Copy, Check, Link2, Trash2, Users, RefreshCw,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tier, Category } from '../backend';
-import { useAddPlayer } from '../hooks/useQueries';
+import { useAddPlayer, useRemovePlayer, useGetAllPlayers } from '../hooks/useQueries';
 
 const ADMIN_PASSWORD = '65515616151';
 const SESSION_KEY = 'admin_authenticated';
@@ -34,6 +38,10 @@ const CATEGORIES: { value: Category; label: string }[] = [
   { value: Category.UHC, label: 'UHC' },
   { value: Category.SMP, label: 'SMP' },
 ];
+
+function getMcAvatarUrl(username: string) {
+  return `https://mc-heads.net/avatar/${encodeURIComponent(username)}/64`;
+}
 
 function PasswordGate({ onAuthenticated }: { onAuthenticated: () => void }) {
   const [password, setPassword] = useState('');
@@ -161,9 +169,118 @@ function AdminUrlCard() {
   );
 }
 
+function PlayerListCard() {
+  const { data: players, isLoading, refetch } = useGetAllPlayers();
+  const removePlayer = useRemovePlayer();
+  const [removingId, setRemovingId] = useState<bigint | null>(null);
+
+  function handleRemove(playerId: bigint, playerName: string) {
+    if (!confirm(`Remove "${playerName}" from the tier list?`)) return;
+    setRemovingId(playerId);
+    removePlayer.mutate(playerId, {
+      onSettled: () => setRemovingId(null),
+    });
+  }
+
+  return (
+    <Card className="border-border bg-card shadow-lg mt-6">
+      <CardHeader className="border-b border-border pb-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Users className="h-5 w-5 text-tier-ht1" />
+            <CardTitle className="text-lg text-foreground">Current Players</CardTitle>
+          </div>
+          <div className="flex items-center gap-2">
+            {players && (
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                {players.length} player{players.length !== 1 ? 's' : ''}
+              </span>
+            )}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => refetch()}
+              className="h-7 w-7 text-muted-foreground hover:text-foreground"
+              title="Refresh"
+            >
+              <RefreshCw className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+        </div>
+        <CardDescription className="text-muted-foreground">
+          Remove players from the tier list using the delete button.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-4 px-0">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-8 text-muted-foreground text-sm">
+            <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent inline-block" />
+            Loading players...
+          </div>
+        ) : !players || players.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-8 text-muted-foreground text-sm gap-2">
+            <Users className="h-8 w-8 opacity-30" />
+            <span>No players added yet.</span>
+          </div>
+        ) : (
+          <ScrollArea className="h-72">
+            <ul className="divide-y divide-border">
+              {players.map((player) => (
+                <li
+                  key={String(player.id)}
+                  className="flex items-center gap-3 px-5 py-3 hover:bg-muted/40 transition-colors"
+                >
+                  {/* Avatar */}
+                  {player.avatarUrl ? (
+                    <img
+                      src={player.avatarUrl}
+                      alt={player.name}
+                      className="w-9 h-9 rounded-md object-cover border border-border flex-shrink-0"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className="w-9 h-9 rounded-md bg-muted border border-border flex items-center justify-center text-sm font-black text-muted-foreground flex-shrink-0">
+                      {player.name.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground truncate">{player.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {player.tier} · {player.category} · {Number(player.score).toLocaleString()}
+                    </p>
+                  </div>
+                  {/* Remove button */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={removingId === player.id}
+                    onClick={() => handleRemove(player.id, player.name)}
+                    className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 flex-shrink-0 transition-colors"
+                    title={`Remove ${player.name}`}
+                  >
+                    {removingId === player.id ? (
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent inline-block" />
+                    ) : (
+                      <Trash2 className="h-3.5 w-3.5" />
+                    )}
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </ScrollArea>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 function AdminPanel({ onLogout }: { onLogout: () => void }) {
   const addPlayer = useAddPlayer();
 
+  const [mcUsername, setMcUsername] = useState('');
   const [name, setName] = useState('');
   const [tier, setTier] = useState<Tier | ''>('');
   const [category, setCategory] = useState<Category | ''>('');
@@ -171,11 +288,38 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
   const [successMessage, setSuccessMessage] = useState('');
   const [validationError, setValidationError] = useState('');
 
+  // Skin preview state
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string | null>(null);
+  const [avatarError, setAvatarError] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // When mcUsername changes, debounce and update preview
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    setAvatarError(false);
+
+    if (!mcUsername.trim()) {
+      setAvatarPreviewUrl(null);
+      return;
+    }
+
+    debounceRef.current = setTimeout(() => {
+      setAvatarPreviewUrl(getMcAvatarUrl(mcUsername.trim()));
+    }, 500);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [mcUsername]);
+
   function resetForm() {
+    setMcUsername('');
     setName('');
     setTier('');
     setCategory('');
     setScore('');
+    setAvatarPreviewUrl(null);
+    setAvatarError(false);
   }
 
   function handleSubmit(e: FormEvent) {
@@ -200,12 +344,18 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
       return;
     }
 
+    const resolvedAvatarUrl =
+      mcUsername.trim() && !avatarError
+        ? getMcAvatarUrl(mcUsername.trim())
+        : null;
+
     addPlayer.mutate(
       {
         name: name.trim(),
         tier: tier as Tier,
         category: category as Category,
         score: BigInt(Math.round(Number(score))),
+        avatarUrl: resolvedAvatarUrl,
       },
       {
         onSuccess: (player) => {
@@ -257,6 +407,48 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
         </CardHeader>
         <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Minecraft Username + Skin Preview */}
+            <div className="space-y-2">
+              <Label htmlFor="mcUsername" className="text-foreground font-medium">
+                Minecraft Username
+                <span className="ml-1.5 text-xs text-muted-foreground font-normal">(for skin avatar)</span>
+              </Label>
+              <div className="flex items-center gap-3">
+                <div className="flex-1">
+                  <Input
+                    id="mcUsername"
+                    type="text"
+                    value={mcUsername}
+                    onChange={(e) => setMcUsername(e.target.value)}
+                    placeholder="e.g. Notch"
+                    className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-tier-ht1"
+                  />
+                </div>
+                {/* Skin preview */}
+                <div className="w-12 h-12 rounded-lg border-2 border-border bg-muted flex items-center justify-center overflow-hidden flex-shrink-0">
+                  {avatarPreviewUrl && !avatarError ? (
+                    <img
+                      src={avatarPreviewUrl}
+                      alt="Minecraft skin preview"
+                      className="w-full h-full object-cover"
+                      onError={() => setAvatarError(true)}
+                      onLoad={() => setAvatarError(false)}
+                    />
+                  ) : (
+                    <span className="text-xs text-muted-foreground text-center leading-tight px-1">
+                      {avatarError ? '?' : 'skin'}
+                    </span>
+                  )}
+                </div>
+              </div>
+              {avatarError && mcUsername.trim() && (
+                <p className="text-xs text-amber-500 flex items-center gap-1">
+                  <AlertCircle className="h-3 w-3" />
+                  Could not load skin for "{mcUsername}". Player will be added without an avatar.
+                </p>
+              )}
+            </div>
+
             {/* Player Name */}
             <div className="space-y-2">
               <Label htmlFor="playerName" className="text-foreground font-medium">
@@ -370,6 +562,9 @@ function AdminPanel({ onLogout }: { onLogout: () => void }) {
           </form>
         </CardContent>
       </Card>
+
+      {/* Current Players List */}
+      <PlayerListCard />
 
       {/* Admin URL Card */}
       <AdminUrlCard />

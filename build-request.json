@@ -1,178 +1,96 @@
 {
   "kind": "build_request",
-  "title": "Fix backend canister + full UI/UX polish sweep",
+  "title": "Add Minecraft skin auto-fetch and remove player to admin panel",
   "projectName": "MultiTiers",
-  "priority": "high",
+  "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-22",
-      "text": "Redeploy the backend Motoko actor with a no-op change (e.g. add or update a comment) to force a fresh canister deployment and bring it out of the stopped state, ensuring all update calls (addPlayer, deletePlayer) and all query calls are operational again.",
+      "id": "REQ-1",
+      "text": "Update the backend player data model to store an optional Minecraft skin URL (or avatar URL) field alongside existing tier/category/score fields. Update addPlayer and any relevant query methods to include this field.",
       "target": "backend",
       "source": {
         "messageIds": [
-          "msg-4",
-          "msg-5",
-          "msg-6"
+          "msg-recent"
         ],
         "quotes": [
-          "Canister koqvn-dqaaa-aaaaa-qfjaq-cai is stopped",
-          "fix the stopped canister issue",
-          "2 yes"
+          "when a player's Minecraft username to add them to the tier list, automatically fetch their Minecraft skin"
         ]
       },
       "acceptanceCriteria": [
-        "The backend canister is in a running state after deployment",
-        "Calling addPlayer succeeds without IC0508 rejection",
-        "All query endpoints (getAllPlayers, getPlayersByTier, searchPlayers) return results without error"
+        "The player record in the backend includes an optional avatarUrl field.",
+        "addPlayer accepts and stores the avatarUrl.",
+        "Existing query methods return the avatarUrl for each player."
       ]
     },
     {
-      "id": "REQ-23",
-      "text": "Redesign the Home page (frontend/src/pages/HomePage.tsx) with improved visual hierarchy: a more impactful hero section with a prominent tagline, polished per-tier stat cards with glowing accent borders matching each tier color, a cleaner top-3 preview section with improved card layout, and better spacing and typography throughout. Ensure the admin access button is clearly visible but visually integrated into the design.",
+      "id": "REQ-2",
+      "text": "Update the admin panel (AdminPage.tsx and/or AdminModal.tsx) so that when a Minecraft username is entered to add a player, the frontend automatically fetches the player's skin avatar using the Mojang API (https://mc-heads.net/avatar/{username} or equivalent public endpoint) and stores the resulting URL as the player's avatar. The avatar preview should be shown in the add-player form before submission.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-10",
-          "msg-11"
+          "msg-recent"
         ],
         "quotes": [
-          "just fix everything and make it better",
-          "improve the Home page"
+          "enter a player's Minecraft username to add them to the tier list — their skin will be automatically fetched via the Mojang API and displayed as their profile picture"
         ]
       },
       "acceptanceCriteria": [
-        "Hero section has a compelling headline and subtext with strong visual presence",
-        "Per-tier stat cards display tier colors with subtle glow effects",
-        "Top-3 preview section is clearly laid out with player name, tier badge, and score visible",
-        "Admin access button is visible and styled consistently with the gaming theme",
-        "Page looks polished and professional on both desktop and mobile"
+        "Admin can type a Minecraft username in the add-player form.",
+        "A preview of the player's Minecraft skin avatar is shown in the form (fetched from a public Mojang-compatible API like mc-heads.net).",
+        "On submission, the avatar URL is sent to the backend and stored with the player record.",
+        "If the username is invalid or the fetch fails, a clear error or fallback is shown."
       ]
     },
     {
-      "id": "REQ-24",
-      "text": "Polish the Tier List page (frontend/src/pages/TierListPage.tsx) and TierRow component (frontend/src/components/TierRow.tsx): improve the tier label design with stronger glow/gradient effects matching each tier's accent color, enhance player card layout in PlayerCard.tsx with better spacing and hover effects, improve the empty-state message styling, and refine the category filter integration visually.",
-      "target": "frontend",
+      "id": "REQ-3",
+      "text": "Add a remove player button in the admin panel (AdminPage.tsx) next to each player in the current player list. Clicking it should delete that player from the backend and update the displayed list.",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-10",
-          "msg-11"
+          "msg-recent"
         ],
         "quotes": [
-          "just fix everything and make it better",
-          "polish the UI across all pages"
+          "add a way to remove players from the tier list",
+          "remove player button on the admin panel to delete players from the tier list"
         ]
       },
       "acceptanceCriteria": [
-        "Tier label badges have vivid glow/gradient effects per tier color",
-        "Player cards have visible hover states (scale or glow effect)",
-        "Empty-state message is styled and readable when no players exist",
-        "Category filter bar is visually polished and clearly shows the active selection",
-        "Layout is responsive and readable on all screen sizes"
+        "Each player listed in the admin panel has a visible remove/delete button.",
+        "Clicking the remove button calls a backend method to delete the player.",
+        "The player list in the admin panel updates immediately after removal.",
+        "The public tier list also no longer shows the removed player after refresh."
       ]
     },
     {
-      "id": "REQ-25",
-      "text": "Polish the Leaderboard page (frontend/src/pages/LeaderboardPage.tsx): redesign the ranked table with alternating row highlights, stronger rank number badges (with gold/silver/bronze styling for top 3 positions), better tier badge styling in each row, improved column headers, hover effects on rows, and a polished empty-state view when no players exist.",
+      "id": "REQ-4",
+      "text": "Update the PlayerCard component and TierRow/TierListPage to display each player's Minecraft skin avatar image (from the stored avatarUrl) as their profile picture instead of (or in addition to) the initial-based avatar. Fall back to the initial-based avatar if no avatarUrl is present.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-10",
-          "msg-11"
+          "msg-recent"
         ],
         "quotes": [
-          "just fix everything and make it better",
-          "polish the UI across all pages"
+          "The public-facing tier list will display players with their Minecraft skin avatars"
         ]
       },
       "acceptanceCriteria": [
-        "Top 3 rank positions have gold, silver, bronze styled number badges",
-        "Table rows have subtle hover highlight effect",
-        "Tier badges in each row use the correct tier accent color",
-        "Column headers are bold and clearly readable",
-        "Empty state is styled with an informative message",
-        "Category filter is visually consistent with the Tier List page filter"
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "text": "Polish the AdminModal component (frontend/src/components/AdminModal.tsx): improve the modal's visual design with a more refined dark card, better form field styling (inputs, selects with consistent dark theme), clearer success/error notification styling, improved player list section with better row layout and delete button styling, and a more prominent logout button. Ensure the modal scrolls properly when the player list is long.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-10",
-          "msg-11"
-        ],
-        "quotes": [
-          "just fix everything and make it better",
-          "improve the Admin modal"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Modal card has a polished dark background with subtle border",
-        "All form inputs and selects have consistent dark-themed styling",
-        "Success notification is visually distinct (e.g. green accent)",
-        "Error messages are clearly styled in red/destructive color",
-        "Player list rows are readable with name, tier, category, score, and delete button",
-        "Modal body scrolls independently when content overflows",
-        "Logout button is clearly visible at bottom or top of the management UI"
-      ]
-    },
-    {
-      "id": "REQ-27",
-      "text": "Polish the Navbar component (frontend/src/components/Navbar.tsx): improve active link highlighting, refine the search input styling to match the dark gaming theme, improve mobile menu appearance, and add a subtle border or gradient line at the bottom of the navbar to separate it from page content.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-10",
-          "msg-11"
-        ],
-        "quotes": [
-          "just fix everything and make it better",
-          "improve visual design"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Active navigation link is clearly highlighted with the HT1 accent color or an underline indicator",
-        "Search input has consistent dark-themed styling with a visible placeholder",
-        "Mobile hamburger menu opens and closes cleanly with styled links",
-        "Navbar has a visible bottom separator line or gradient",
-        "Logo/brand area is visually prominent"
-      ]
-    },
-    {
-      "id": "REQ-28",
-      "text": "Polish the CategoryFilter component (frontend/src/components/CategoryFilter.tsx): improve button sizing, spacing, and active state styling so the selected category is immediately obvious; add a subtle hover state on inactive buttons; ensure the filter bar wraps cleanly on smaller screens.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-10",
-          "msg-11"
-        ],
-        "quotes": [
-          "just fix everything and make it better",
-          "improve visual design"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Active category button has a clear filled/glowing style distinct from inactive buttons",
-        "Inactive buttons have a visible hover effect",
-        "Buttons wrap onto multiple lines on small screens without breaking layout",
-        "All 9 options (All + 8 categories) are visible and readable"
+        "PlayerCard displays the Minecraft skin avatar image when avatarUrl is available.",
+        "If no avatarUrl is present, the existing initial-based fallback avatar is shown.",
+        "Avatars are correctly sized and styled within the PlayerCard layout."
       ]
     }
   ],
   "constraints": [
-    "Do not change the password (65515616151) for the admin gate",
-    "Do not modify files in frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui",
-    "Preserve all existing features: 10-tier system, category filter, admin modal, player add/delete, search, leaderboard, tier list",
-    "Do not alter the backend data schema or Player type structure"
+    "All Motoko logic must remain in backend/main.mo (single-actor architecture).",
+    "Do not edit files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
+    "Minecraft skin fetching must happen on the frontend using a public API (e.g., mc-heads.net) — do not proxy through the backend canister.",
+    "Remove player functionality must only be accessible within the admin panel (password-gated)."
   ],
   "nonGoals": [
-    "Adding new pages or routes beyond what already exists",
-    "Changing the tier system or category list",
-    "Adding new backend functions or changing the backend API",
-    "Adding Internet Identity or any authentication beyond the password gate",
-    "Changing the admin password"
+    "No user-uploaded skin images — only auto-fetch via Minecraft username.",
+    "No authentication changes beyond the existing password gate.",
+    "No changes to the Leaderboard page layout or logic.",
+    "No real-time updates or WebSocket-based refresh."
   ],
   "imageRequirements": {
     "required": [],

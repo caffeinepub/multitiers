@@ -1,125 +1,75 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix backend canister + full UI/UX polish sweep",
+  "title": "Add Minecraft skin auto-fetch and remove player to admin panel",
   "requirements": [
     {
-      "id": "REQ-23",
-      "summary": "Redesign Home page with improved visual hierarchy, impactful hero section, polished per-tier stat cards with glowing borders, cleaner top-3 preview, and better spacing throughout",
+      "id": "REQ-2",
+      "summary": "Add Minecraft username input with automatic skin avatar fetch and preview in the admin add-player form",
       "acceptanceCriteria": [
-        "Hero section has a compelling headline and subtext with strong visual presence",
-        "Per-tier stat cards display tier colors with subtle glow effects",
-        "Top-3 preview section is clearly laid out with player name, tier badge, and score visible",
-        "Admin access button is visible and styled consistently with the gaming theme",
-        "Page looks polished and professional on both desktop and mobile"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Redesign the Home page with an impactful hero section featuring a prominent tagline and improved typography. Replace the current per-tier stat cards with polished card components that include glowing accent borders using each tier's color from TIER_CONFIG. Enhance the top-3 preview section with improved card layout showing player name, tier badge, and score more prominently. Improve overall spacing, use larger headings for the hero, and ensure the admin access button is clearly visible but visually integrated. Apply responsive design patterns for mobile and desktop views."
-        }
-      ]
-    },
-    {
-      "id": "REQ-24",
-      "summary": "Polish Tier List page and TierRow component with stronger glow/gradient effects on tier labels, enhanced player card hover effects, improved empty-state styling, and refined category filter integration",
-      "acceptanceCriteria": [
-        "Tier label badges have vivid glow/gradient effects per tier color",
-        "Player cards have visible hover states (scale or glow effect)",
-        "Empty-state message is styled and readable when no players exist",
-        "Category filter bar is visually polished and clearly shows the active selection",
-        "Layout is responsive and readable on all screen sizes"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/TierListPage.tsx",
-          "operation": "modify",
-          "description": "Refine the Tier List page layout by improving spacing between tier rows, enhancing the category filter visual integration at the top of the page, and ensuring the page responds cleanly on mobile. Add better container styling and improve the overall visual hierarchy."
-        },
-        {
-          "path": "frontend/src/components/TierRow.tsx",
-          "operation": "modify",
-          "description": "Redesign the tier label badge with stronger glow and gradient effects matching each tier's accent color from TIER_CONFIG. Apply vivid box-shadow and background gradient styling to make tier labels more prominent. Improve the empty-state message styling with better typography and color. Ensure the player card grid layout is responsive and visually balanced."
-        },
-        {
-          "path": "frontend/src/components/PlayerCard.tsx",
-          "operation": "modify",
-          "description": "Add visible hover effects to player cards using CSS transitions for scale or glow effects. Enhance the card's base styling with better shadows and borders. Ensure hover states are smooth and tie into the tier color scheme from TIER_CONFIG. Improve spacing and typography within the card for better readability."
-        }
-      ]
-    },
-    {
-      "id": "REQ-25",
-      "summary": "Polish Leaderboard page with ranked table featuring alternating row highlights, gold/silver/bronze styling for top 3 positions, improved tier badges, better column headers, hover effects, and polished empty-state view",
-      "acceptanceCriteria": [
-        "Top 3 rank positions have gold, silver, bronze styled number badges",
-        "Table rows have subtle hover highlight effect",
-        "Tier badges in each row use the correct tier accent color",
-        "Column headers are bold and clearly readable",
-        "Empty state is styled with an informative message",
-        "Category filter is visually consistent with the Tier List page filter"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/LeaderboardPage.tsx",
-          "operation": "modify",
-          "description": "Redesign the ranked table with alternating row background colors for better readability. Add special styling for rank positions 1, 2, and 3 using gold, silver, and bronze color badges respectively. Implement hover effects on table rows with subtle highlight transitions. Improve column header styling with bold text and better spacing. Enhance tier badge display in each row to use the correct tier accent color from TIER_CONFIG. Add a polished empty-state view with an informative message when no players exist. Ensure the category filter bar is visually consistent with the Tier List page. Make the table responsive on smaller screens."
-        }
-      ]
-    },
-    {
-      "id": "REQ-26",
-      "summary": "Polish AdminModal component with refined dark card design, better form field styling, clearer success/error notifications, improved player list layout, and prominent logout button with proper scrolling",
-      "acceptanceCriteria": [
-        "Modal card has a polished dark background with subtle border",
-        "All form inputs and selects have consistent dark-themed styling",
-        "Success notification is visually distinct (e.g. green accent)",
-        "Error messages are clearly styled in red/destructive color",
-        "Player list rows are readable with name, tier, category, score, and delete button",
-        "Modal body scrolls independently when content overflows",
-        "Logout button is clearly visible at bottom or top of the management UI"
+        "Admin can type a Minecraft username in the add-player form.",
+        "A preview of the player's Minecraft skin avatar is shown in the form (fetched from a public Mojang-compatible API like mc-heads.net).",
+        "On submission, the avatar URL is sent to the backend and stored with the player record.",
+        "If the username is invalid or the fetch fails, a clear error or fallback is shown."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AdminModal.tsx",
           "operation": "modify",
-          "description": "Improve the modal's visual design with a more refined dark card background and subtle border. Style all form inputs and select elements with consistent dark-themed styling using border, background, and text colors that match the gaming theme. Make success notifications visually distinct with a green accent color and appropriate icon or styling. Style error messages clearly in red/destructive color. Improve the player list section with better row layout showing name, tier, category, score, and delete button in a readable format. Ensure the modal body scrolls independently when the player list is long by applying appropriate overflow styles. Add or enhance the logout button to be more prominent and clearly visible at the top or bottom of the management UI. Preserve the existing password gate (65515616151) without changes."
+          "description": "Add a Minecraft username input field to the add-player form. When the username is entered, automatically fetch the skin avatar from https://mc-heads.net/avatar/{username} and display it as a preview in the form. Store the fetched URL in component state and include it in the addPlayer mutation payload. Add error handling for invalid usernames or failed fetches with clear feedback to the user."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Update the add-player form to include a Minecraft username input field. When the username is entered, automatically fetch the player's skin avatar from https://mc-heads.net/avatar/{username} and show a preview. On form submission, pass the fetched avatarUrl to the addPlayer backend method. Include validation and error handling for fetch failures."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Update the useAddPlayer mutation to accept an optional avatarUrl parameter and pass it to the backend addPlayer method. Ensure the mutation payload includes avatarUrl when provided."
         }
       ]
     },
     {
-      "id": "REQ-27",
-      "summary": "Polish Navbar component with improved active link highlighting, refined search input styling, better mobile menu appearance, and a subtle separator at the bottom",
+      "id": "REQ-3",
+      "summary": "Add remove player button to admin panel for deleting players from the tier list",
       "acceptanceCriteria": [
-        "Active navigation link is clearly highlighted with the HT1 accent color or an underline indicator",
-        "Search input has consistent dark-themed styling with a visible placeholder",
-        "Mobile hamburger menu opens and closes cleanly with styled links",
-        "Navbar has a visible bottom separator line or gradient",
-        "Logo/brand area is visually prominent"
+        "Each player listed in the admin panel has a visible remove/delete button.",
+        "Clicking the remove button calls a backend method to delete the player.",
+        "The player list in the admin panel updates immediately after removal.",
+        "The public tier list also no longer shows the removed player after refresh."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/Navbar.tsx",
+          "path": "frontend/src/components/AdminModal.tsx",
           "operation": "modify",
-          "description": "Improve active link highlighting by applying the HT1 accent color or an underline indicator to the currently active route. Refine the search input styling to match the dark gaming theme with better border, background, and placeholder visibility. Enhance the mobile menu appearance with cleaner styling for links and improved open/close transitions. Add a subtle bottom border or gradient line to the navbar to separate it from page content. Ensure the logo/brand area is visually prominent with appropriate sizing and styling."
+          "description": "Add a remove/delete button next to each player in the scrollable current-player list within the admin modal. Wire the button to call the removePlayer backend method with the player's ID. Trigger a query invalidation after successful deletion to refresh the player list."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Add a remove/delete button next to each player displayed in the admin panel's player list. Wire the button to call the removePlayer backend method with the player's ID. Invalidate the players query after successful removal to update the UI immediately."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add a new useRemovePlayer mutation hook that calls the backend removePlayer method with a player ID. Configure the mutation to invalidate all player-related queries (allPlayers, playersByCategory, playersByTier) on success to ensure the UI updates across all pages."
         }
       ]
     },
     {
-      "id": "REQ-28",
-      "summary": "Polish CategoryFilter component with improved button sizing, spacing, clear active state styling, hover effects on inactive buttons, and responsive wrapping on small screens",
+      "id": "REQ-4",
+      "summary": "Display Minecraft skin avatar images in PlayerCard with fallback to initial-based avatar",
       "acceptanceCriteria": [
-        "Active category button has a clear filled/glowing style distinct from inactive buttons",
-        "Inactive buttons have a visible hover effect",
-        "Buttons wrap onto multiple lines on small screens without breaking layout",
-        "All 9 options (All + 8 categories) are visible and readable"
+        "PlayerCard displays the Minecraft skin avatar image when avatarUrl is available.",
+        "If no avatarUrl is present, the existing initial-based fallback avatar is shown.",
+        "Avatars are correctly sized and styled within the PlayerCard layout."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/CategoryFilter.tsx",
+          "path": "frontend/src/components/PlayerCard.tsx",
           "operation": "modify",
-          "description": "Improve button sizing and spacing for better visual balance. Enhance the active category button styling with a clear filled or glowing effect that is distinct from inactive buttons, using the tier-ht1 accent color or similar prominent styling. Add visible hover effects to inactive buttons with subtle color transitions. Ensure the filter bar wraps cleanly onto multiple lines on smaller screens using responsive flex wrapping without breaking the layout. Verify all 9 options (All + 8 categories) remain visible and readable across all screen sizes."
+          "description": "Update the PlayerCard component to display the player's Minecraft skin avatar image from the avatarUrl field when available. If avatarUrl is null or undefined, fall back to the existing initial-based avatar circle. Ensure the avatar image is properly sized, styled, and fits within the existing card layout with appropriate border-radius and tier-specific glow effects."
         }
       ]
     }

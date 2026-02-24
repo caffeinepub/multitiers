@@ -35,12 +35,27 @@ export const Player = IDL.Record({
   'name' : IDL.Text,
   'tier' : Tier,
   'score' : IDL.Int,
+  'avatarUrl' : IDL.Opt(IDL.Text),
   'category' : Category,
 });
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 
 export const idlService = IDL.Service({
-  'addPlayer' : IDL.Func([IDL.Text, Tier, IDL.Int, Category], [Player], []),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'addPlayer' : IDL.Func(
+      [IDL.Text, Tier, IDL.Int, Category, IDL.Opt(IDL.Text)],
+      [Player],
+      [],
+    ),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'getAllPlayers' : IDL.Func([], [IDL.Vec(Player)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
   'getPlayersByCategory' : IDL.Func([Category], [IDL.Vec(Player)], ['query']),
   'getPlayersByTier' : IDL.Func([Tier], [IDL.Vec(Player)], ['query']),
   'getPlayersByTierAndCategory' : IDL.Func(
@@ -48,6 +63,14 @@ export const idlService = IDL.Service({
       [IDL.Vec(Player)],
       ['query'],
     ),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'removePlayer' : IDL.Func([IDL.Nat], [], []),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   'searchPlayersByName' : IDL.Func([IDL.Text], [IDL.Vec(Player)], ['query']),
 });
 
@@ -81,12 +104,27 @@ export const idlFactory = ({ IDL }) => {
     'name' : IDL.Text,
     'tier' : Tier,
     'score' : IDL.Int,
+    'avatarUrl' : IDL.Opt(IDL.Text),
     'category' : Category,
   });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
   
   return IDL.Service({
-    'addPlayer' : IDL.Func([IDL.Text, Tier, IDL.Int, Category], [Player], []),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'addPlayer' : IDL.Func(
+        [IDL.Text, Tier, IDL.Int, Category, IDL.Opt(IDL.Text)],
+        [Player],
+        [],
+      ),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'getAllPlayers' : IDL.Func([], [IDL.Vec(Player)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
     'getPlayersByCategory' : IDL.Func([Category], [IDL.Vec(Player)], ['query']),
     'getPlayersByTier' : IDL.Func([Tier], [IDL.Vec(Player)], ['query']),
     'getPlayersByTierAndCategory' : IDL.Func(
@@ -94,6 +132,14 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(Player)],
         ['query'],
       ),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'removePlayer' : IDL.Func([IDL.Nat], [], []),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
     'searchPlayersByName' : IDL.Func([IDL.Text], [IDL.Vec(Player)], ['query']),
   });
 };

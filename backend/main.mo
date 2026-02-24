@@ -1,13 +1,16 @@
+import AccessControl "authorization/access-control";
 import Array "mo:core/Array";
 import Iter "mo:core/Iter";
 import Map "mo:core/Map";
+import Migration "migration";
 import Nat "mo:core/Nat";
 import Order "mo:core/Order";
+import Principal "mo:core/Principal";
 import Runtime "mo:core/Runtime";
 import Text "mo:core/Text";
+import MixinAuthorization "authorization/MixinAuthorization";
 
-// This is a no-op change to force redeployment of the non-responding canister
-
+(with migration = Migration.run)
 actor {
   module Player {
     public type Tier = {
@@ -40,6 +43,7 @@ actor {
       tier : Tier;
       score : Int;
       category : Category;
+      avatarUrl : ?Text;
     };
 
     public func compare(player1 : Player, player2 : Player) : Order.Order {
@@ -51,9 +55,38 @@ actor {
   type Tier = Player.Tier;
   type Category = Player.Category;
 
-  var nextId = 1;
+  public type UserProfile = {
+    name : Text;
+  };
 
+  let accessControlState = AccessControl.initState();
+  include MixinAuthorization(accessControlState);
+
+  let userProfiles = Map.empty<Principal, UserProfile>();
+
+  var nextId = 1;
   let players = Map.empty<Nat, Player>();
+
+  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get profiles");
+    };
+    userProfiles.get(caller);
+  };
+
+  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
+    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Can only view your own profile");
+    };
+    userProfiles.get(user);
+  };
+
+  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can save profiles");
+    };
+    userProfiles.add(caller, profile);
+  };
 
   public query ({ caller }) func getAllPlayers() : async [Player] {
     players.values().toArray().sort();
@@ -90,7 +123,11 @@ actor {
     tier : Tier,
     score : Int,
     category : Category,
+    avatarUrl : ?Text,
   ) : async Player {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can add players");
+    };
     if (name.isEmpty()) { Runtime.trap("Name cannot be empty") };
     let player : Player = {
       id = nextId;
@@ -98,9 +135,21 @@ actor {
       tier;
       score;
       category;
+      avatarUrl;
     };
     players.add(nextId, player);
     nextId += 1;
     player;
+  };
+
+  public shared ({ caller }) func removePlayer(playerId : Nat) : async () {
+    if (not (AccessControl.isAdmin(accessControlState, caller))) {
+      Runtime.trap("Unauthorized: Only admins can remove players");
+    };
+    if (players.containsKey(playerId)) {
+      players.remove(playerId);
+    } else {
+      Runtime.trap("Player does not exist");
+    };
   };
 };

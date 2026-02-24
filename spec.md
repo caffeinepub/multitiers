@@ -1,15 +1,14 @@
 # Specification
 
 ## Summary
-**Goal:** Fix the stopped backend canister and perform a full UI/UX polish sweep across all pages and components of the MultiTiers app.
+**Goal:** Add automatic Minecraft skin fetching when adding players, display skin avatars on player cards, and add a remove player button in the admin panel.
 
 **Planned changes:**
-- Redeploy the backend Motoko actor with a no-op change to bring the canister out of its stopped state, restoring all update and query calls
-- Redesign the Home page with a more impactful hero section, glowing per-tier stat cards, and improved top-3 preview layout
-- Polish the Tier List page and TierRow/PlayerCard components with stronger tier glow/gradient effects, better hover states, and improved empty-state styling
-- Polish the Leaderboard page with gold/silver/bronze rank badges, alternating row highlights, hover effects, and improved tier badge styling
-- Polish the AdminModal with refined dark card styling, consistent form input/select theming, distinct success/error notifications, scrollable player list, and prominent logout button
-- Polish the Navbar with active link highlighting, dark-themed search input, improved mobile menu, and a bottom separator line
-- Polish the CategoryFilter with clear active/inactive button states, hover effects, and responsive wrapping
+- Update the backend player data model to include an optional `avatarUrl` field; update `addPlayer` and query methods accordingly
+- Add a `removePlayer` method to the backend to delete a player by ID
+- In the admin panel add-player form, auto-fetch the player's Minecraft skin avatar from `mc-heads.net` when a username is entered and show a preview before submission
+- Show a clear error or fallback if the username is invalid or the avatar fetch fails
+- Add a remove button next to each player in the admin panel list that calls the backend delete method and refreshes the list
+- Update `PlayerCard` to display the `avatarUrl` image when available, falling back to the existing initial-based avatar if not
 
-**User-visible outcome:** The backend canister is fully operational again, and every page and component in the app has a visually polished, consistent dark gaming aesthetic with improved typography, spacing, and interactive states across desktop and mobile.
+**User-visible outcome:** Admins can add players by Minecraft username with an auto-fetched skin preview, remove players directly from the admin panel, and the public tier list shows each player's Minecraft skin avatar as their profile picture.

@@ -31,7 +31,25 @@ export default function PlayerCard({ player, rank }: PlayerCardProps) {
         </span>
       )}
       {/* Avatar */}
-      <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black border-2 ${config.bg} ${config.color} group-hover:shadow-${config.glow.replace('shadow-', '')} transition-shadow`}>
+      {player.avatarUrl ? (
+        <img
+          src={player.avatarUrl}
+          alt={player.name}
+          className={`w-12 h-12 rounded-lg border-2 object-cover ${config.bg} group-hover:shadow-${config.glow.replace('shadow-', '')} transition-shadow`}
+          onError={(e) => {
+            // On error, hide the image and show fallback via CSS
+            const target = e.currentTarget as HTMLImageElement;
+            target.style.display = 'none';
+            const fallback = target.nextElementSibling as HTMLElement | null;
+            if (fallback) fallback.style.display = 'flex';
+          }}
+        />
+      ) : null}
+      {/* Fallback initial avatar — shown when no avatarUrl or image fails to load */}
+      <div
+        className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-black border-2 ${config.bg} ${config.color} group-hover:shadow-${config.glow.replace('shadow-', '')} transition-shadow`}
+        style={{ display: player.avatarUrl ? 'none' : 'flex' }}
+      >
         {player.name.charAt(0).toUpperCase()}
       </div>
       {/* Name */}

@@ -94,7 +94,11 @@ export interface Player {
     name: string;
     tier: Tier;
     score: bigint;
+    avatarUrl?: string;
     category: Category;
+}
+export interface UserProfile {
+    name: string;
 }
 export enum Category {
     Axe = "Axe",
@@ -118,133 +122,270 @@ export enum Tier {
     LT4 = "LT4",
     LT5 = "LT5"
 }
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
+}
 export interface backendInterface {
-    addPlayer(name: string, tier: Tier, score: bigint, category: Category): Promise<Player>;
+    _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
+    addPlayer(name: string, tier: Tier, score: bigint, category: Category, avatarUrl: string | null): Promise<Player>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     getAllPlayers(): Promise<Array<Player>>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
     getPlayersByCategory(category: Category): Promise<Array<Player>>;
     getPlayersByTier(tier: Tier): Promise<Array<Player>>;
     getPlayersByTierAndCategory(tier: Tier, category: Category): Promise<Array<Player>>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    removePlayer(playerId: bigint): Promise<void>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
     searchPlayersByName(searchTerm: string): Promise<Array<Player>>;
 }
-import type { Category as _Category, Player as _Player, Tier as _Tier } from "./declarations/backend.did.d.ts";
+import type { Category as _Category, Player as _Player, Tier as _Tier, UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async addPlayer(arg0: string, arg1: Tier, arg2: bigint, arg3: Category): Promise<Player> {
+    async _initializeAccessControlWithSecret(arg0: string): Promise<void> {
         if (this.processError) {
             try {
-                const result = await this.actor.addPlayer(arg0, to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg1), arg2, to_candid_Category_n3(this._uploadFile, this._downloadFile, arg3));
-                return from_candid_Player_n5(this._uploadFile, this._downloadFile, result);
+                const result = await this.actor._initializeAccessControlWithSecret(arg0);
+                return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.addPlayer(arg0, to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg1), arg2, to_candid_Category_n3(this._uploadFile, this._downloadFile, arg3));
-            return from_candid_Player_n5(this._uploadFile, this._downloadFile, result);
+            const result = await this.actor._initializeAccessControlWithSecret(arg0);
+            return result;
+        }
+    }
+    async addPlayer(arg0: string, arg1: Tier, arg2: bigint, arg3: Category, arg4: string | null): Promise<Player> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.addPlayer(arg0, to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg1), arg2, to_candid_Category_n3(this._uploadFile, this._downloadFile, arg3), to_candid_opt_n5(this._uploadFile, this._downloadFile, arg4));
+                return from_candid_Player_n6(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.addPlayer(arg0, to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg1), arg2, to_candid_Category_n3(this._uploadFile, this._downloadFile, arg3), to_candid_opt_n5(this._uploadFile, this._downloadFile, arg4));
+            return from_candid_Player_n6(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async assignCallerUserRole(arg0: Principal, arg1: UserRole): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n13(this._uploadFile, this._downloadFile, arg1));
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.assignCallerUserRole(arg0, to_candid_UserRole_n13(this._uploadFile, this._downloadFile, arg1));
+            return result;
         }
     }
     async getAllPlayers(): Promise<Array<Player>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getAllPlayers();
-                return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getAllPlayers();
-            return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getCallerUserProfile(): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerUserProfile();
+                return from_candid_opt_n16(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerUserProfile();
+            return from_candid_opt_n16(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getCallerUserRole(): Promise<UserRole> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getCallerUserRole();
+                return from_candid_UserRole_n17(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getCallerUserRole();
+            return from_candid_UserRole_n17(this._uploadFile, this._downloadFile, result);
         }
     }
     async getPlayersByCategory(arg0: Category): Promise<Array<Player>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getPlayersByCategory(to_candid_Category_n3(this._uploadFile, this._downloadFile, arg0));
-                return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getPlayersByCategory(to_candid_Category_n3(this._uploadFile, this._downloadFile, arg0));
-            return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
         }
     }
     async getPlayersByTier(arg0: Tier): Promise<Array<Player>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getPlayersByTier(to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg0));
-                return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getPlayersByTier(to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg0));
-            return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
         }
     }
     async getPlayersByTierAndCategory(arg0: Tier, arg1: Category): Promise<Array<Player>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getPlayersByTierAndCategory(to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg0), to_candid_Category_n3(this._uploadFile, this._downloadFile, arg1));
-                return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.getPlayersByTierAndCategory(to_candid_Tier_n1(this._uploadFile, this._downloadFile, arg0), to_candid_Category_n3(this._uploadFile, this._downloadFile, arg1));
-            return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getUserProfile(arg0: Principal): Promise<UserProfile | null> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getUserProfile(arg0);
+                return from_candid_opt_n16(this._uploadFile, this._downloadFile, result);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getUserProfile(arg0);
+            return from_candid_opt_n16(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async isCallerAdmin(): Promise<boolean> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.isCallerAdmin();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.isCallerAdmin();
+            return result;
+        }
+    }
+    async removePlayer(arg0: bigint): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.removePlayer(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.removePlayer(arg0);
+            return result;
+        }
+    }
+    async saveCallerUserProfile(arg0: UserProfile): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.saveCallerUserProfile(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.saveCallerUserProfile(arg0);
+            return result;
         }
     }
     async searchPlayersByName(arg0: string): Promise<Array<Player>> {
         if (this.processError) {
             try {
                 const result = await this.actor.searchPlayersByName(arg0);
-                return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+                return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
             const result = await this.actor.searchPlayersByName(arg0);
-            return from_candid_vec_n11(this._uploadFile, this._downloadFile, result);
+            return from_candid_vec_n15(this._uploadFile, this._downloadFile, result);
         }
     }
 }
-function from_candid_Category_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Category): Category {
-    return from_candid_variant_n10(_uploadFile, _downloadFile, value);
+function from_candid_Category_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Category): Category {
+    return from_candid_variant_n12(_uploadFile, _downloadFile, value);
 }
-function from_candid_Player_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Player): Player {
-    return from_candid_record_n6(_uploadFile, _downloadFile, value);
+function from_candid_Player_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Player): Player {
+    return from_candid_record_n7(_uploadFile, _downloadFile, value);
 }
-function from_candid_Tier_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Tier): Tier {
-    return from_candid_variant_n8(_uploadFile, _downloadFile, value);
+function from_candid_Tier_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Tier): Tier {
+    return from_candid_variant_n9(_uploadFile, _downloadFile, value);
 }
-function from_candid_record_n6(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_UserRole_n17(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _UserRole): UserRole {
+    return from_candid_variant_n18(_uploadFile, _downloadFile, value);
+}
+function from_candid_opt_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [string]): string | null {
+    return value.length === 0 ? null : value[0];
+}
+function from_candid_opt_n16(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: [] | [_UserProfile]): UserProfile | null {
+    return value.length === 0 ? null : value[0];
+}
+function from_candid_record_n7(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
     name: string;
     tier: _Tier;
     score: bigint;
+    avatarUrl: [] | [string];
     category: _Category;
 }): {
     id: bigint;
     name: string;
     tier: Tier;
     score: bigint;
+    avatarUrl?: string;
     category: Category;
 } {
     return {
         id: value.id,
         name: value.name,
-        tier: from_candid_Tier_n7(_uploadFile, _downloadFile, value.tier),
+        tier: from_candid_Tier_n8(_uploadFile, _downloadFile, value.tier),
         score: value.score,
-        category: from_candid_Category_n9(_uploadFile, _downloadFile, value.category)
+        avatarUrl: record_opt_to_undefined(from_candid_opt_n10(_uploadFile, _downloadFile, value.avatarUrl)),
+        category: from_candid_Category_n11(_uploadFile, _downloadFile, value.category)
     };
 }
-function from_candid_variant_n10(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n12(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     Axe: null;
 } | {
     SMP: null;
@@ -263,7 +404,16 @@ function from_candid_variant_n10(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }): Category {
     return "Axe" in value ? Category.Axe : "SMP" in value ? Category.SMP : "UHC" in value ? Category.UHC : "Sword" in value ? Category.Sword : "Mace" in value ? Category.Mace : "Crystal" in value ? Category.Crystal : "Spearmace" in value ? Category.Spearmace : "DiamondSMP" in value ? Category.DiamondSMP : value;
 }
-function from_candid_variant_n8(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+function from_candid_variant_n18(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+}): UserRole {
+    return "admin" in value ? UserRole.admin : "user" in value ? UserRole.user : "guest" in value ? UserRole.guest : value;
+}
+function from_candid_variant_n9(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     HT1: null;
 } | {
     HT2: null;
@@ -286,14 +436,35 @@ function from_candid_variant_n8(_uploadFile: (file: ExternalBlob) => Promise<Uin
 }): Tier {
     return "HT1" in value ? Tier.HT1 : "HT2" in value ? Tier.HT2 : "HT3" in value ? Tier.HT3 : "HT4" in value ? Tier.HT4 : "HT5" in value ? Tier.HT5 : "LT1" in value ? Tier.LT1 : "LT2" in value ? Tier.LT2 : "LT3" in value ? Tier.LT3 : "LT4" in value ? Tier.LT4 : "LT5" in value ? Tier.LT5 : value;
 }
-function from_candid_vec_n11(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Player>): Array<Player> {
-    return value.map((x)=>from_candid_Player_n5(_uploadFile, _downloadFile, x));
+function from_candid_vec_n15(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Array<_Player>): Array<Player> {
+    return value.map((x)=>from_candid_Player_n6(_uploadFile, _downloadFile, x));
 }
 function to_candid_Category_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Category): _Category {
     return to_candid_variant_n4(_uploadFile, _downloadFile, value);
 }
 function to_candid_Tier_n1(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Tier): _Tier {
     return to_candid_variant_n2(_uploadFile, _downloadFile, value);
+}
+function to_candid_UserRole_n13(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): _UserRole {
+    return to_candid_variant_n14(_uploadFile, _downloadFile, value);
+}
+function to_candid_opt_n5(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: string | null): [] | [string] {
+    return value === null ? candid_none() : candid_some(value);
+}
+function to_candid_variant_n14(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: UserRole): {
+    admin: null;
+} | {
+    user: null;
+} | {
+    guest: null;
+} {
+    return value == UserRole.admin ? {
+        admin: null
+    } : value == UserRole.user ? {
+        user: null
+    } : value == UserRole.guest ? {
+        guest: null
+    } : value;
 }
 function to_candid_variant_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: Tier): {
     HT1: null;

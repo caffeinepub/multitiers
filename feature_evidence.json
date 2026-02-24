@@ -2,112 +2,61 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-redesign-the-home-page-frontend-src-pages-homepage-tsx-with-improved-visual-hierarchy-a-more-impactful-hero-section-with-a-prominent-tagline-polished-per-tier-stat-cards-with-glowing-accent-borders-matching-each-tier-color-a-cleaner-top-3-preview-section-with-improved-card-layout-and-better-spacing-and-typography-throughout-ensure-the-admin-access-button-is-clearly-visible-but-visually-integrated-into-the-design",
-      "featureTitle": "Redesign the Home page (frontend/src/pages/HomePage.tsx) with improved visual hierarchy: a more impactful hero section with a prominent tagline, polished per-tier stat cards with glowing accent borders matching each tier color, a cleaner top-3 preview section with improved card layout, and better spacing and typography throughout. Ensure the admin access button is clearly visible but visually integrated into the design.",
+      "featureId": "feature-update-the-admin-panel-adminpage-tsx-and-or-adminmodal-tsx-so-that-when-a-minecraft-username-is-entered-to-add-a-player-the-frontend-automatically-fetches-the-player-s-skin-avatar-using-the-mojang-api-https-mc-heads-net-avatar-username-or-equivalent-public-endpoint-and-stores-the-resulting-url-as-the-player-s-avatar-the-avatar-preview-should-be-shown-in-the-add-player-form-before-submission",
+      "featureTitle": "Update the admin panel (AdminPage.tsx and/or AdminModal.tsx) so that when a Minecraft username is entered to add a player, the frontend automatically fetches the player's skin avatar using the Mojang API (https://mc-heads.net/avatar/{username} or equivalent public endpoint) and stores the resulting URL as the player's avatar. The avatar preview should be shown in the add-player form before submission.",
       "files": [
-        "frontend/src/pages/HomePage.tsx"
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/AdminPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-23"
+        "REQ-2"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-polish-the-tier-list-page-frontend-src-pages-tierlistpage-tsx-and-tierrow-component-frontend-src-components-tierrow-tsx-improve-the-tier-label-design-with-stronger-glow-gradient-effects-matching-each-tier-s-accent-color-enhance-player-card-layout-in-playercard-tsx-with-better-spacing-and-hover-effects-improve-the-empty-state-message-styling-and-refine-the-category-filter-integration-visually",
-      "featureTitle": "Polish the Tier List page (frontend/src/pages/TierListPage.tsx) and TierRow component (frontend/src/components/TierRow.tsx): improve the tier label design with stronger glow/gradient effects matching each tier's accent color, enhance player card layout in PlayerCard.tsx with better spacing and hover effects, improve the empty-state message styling, and refine the category filter integration visually.",
+      "featureId": "feature-add-a-remove-player-button-in-the-admin-panel-adminpage-tsx-next-to-each-player-in-the-current-player-list-clicking-it-should-delete-that-player-from-the-backend-and-update-the-displayed-list",
+      "featureTitle": "Add a remove player button in the admin panel (AdminPage.tsx) next to each player in the current player list. Clicking it should delete that player from the backend and update the displayed list.",
       "files": [
-        "frontend/src/components/PlayerCard.tsx",
-        "frontend/src/components/TierRow.tsx",
-        "frontend/src/pages/TierListPage.tsx"
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/AdminPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-24"
+        "REQ-3"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-polish-the-leaderboard-page-frontend-src-pages-leaderboardpage-tsx-redesign-the-ranked-table-with-alternating-row-highlights-stronger-rank-number-badges-with-gold-silver-bronze-styling-for-top-3-positions-better-tier-badge-styling-in-each-row-improved-column-headers-hover-effects-on-rows-and-a-polished-empty-state-view-when-no-players-exist",
-      "featureTitle": "Polish the Leaderboard page (frontend/src/pages/LeaderboardPage.tsx): redesign the ranked table with alternating row highlights, stronger rank number badges (with gold/silver/bronze styling for top 3 positions), better tier badge styling in each row, improved column headers, hover effects on rows, and a polished empty-state view when no players exist.",
+      "featureId": "feature-update-the-playercard-component-and-tierrow-tierlistpage-to-display-each-player-s-minecraft-skin-avatar-image-from-the-stored-avatarurl-as-their-profile-picture-instead-of-or-in-addition-to-the-initial-based-avatar-fall-back-to-the-initial-based-avatar-if-no-avatarurl-is-present",
+      "featureTitle": "Update the PlayerCard component and TierRow/TierListPage to display each player's Minecraft skin avatar image (from the stored avatarUrl) as their profile picture instead of (or in addition to) the initial-based avatar. Fall back to the initial-based avatar if no avatarUrl is present.",
       "files": [
-        "frontend/src/pages/LeaderboardPage.tsx"
+        "frontend/src/components/PlayerCard.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
       ],
       "testIds": [
-        "REQ-25"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-polish-the-adminmodal-component-frontend-src-components-adminmodal-tsx-improve-the-modal-s-visual-design-with-a-more-refined-dark-card-better-form-field-styling-inputs-selects-with-consistent-dark-theme-clearer-success-error-notification-styling-improved-player-list-section-with-better-row-layout-and-delete-button-styling-and-a-more-prominent-logout-button-ensure-the-modal-scrolls-properly-when-the-player-list-is-long",
-      "featureTitle": "Polish the AdminModal component (frontend/src/components/AdminModal.tsx): improve the modal's visual design with a more refined dark card, better form field styling (inputs, selects with consistent dark theme), clearer success/error notification styling, improved player list section with better row layout and delete button styling, and a more prominent logout button. Ensure the modal scrolls properly when the player list is long.",
-      "files": [
-        "frontend/src/components/AdminModal.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-26"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-polish-the-navbar-component-frontend-src-components-navbar-tsx-improve-active-link-highlighting-refine-the-search-input-styling-to-match-the-dark-gaming-theme-improve-mobile-menu-appearance-and-add-a-subtle-border-or-gradient-line-at-the-bottom-of-the-navbar-to-separate-it-from-page-content",
-      "featureTitle": "Polish the Navbar component (frontend/src/components/Navbar.tsx): improve active link highlighting, refine the search input styling to match the dark gaming theme, improve mobile menu appearance, and add a subtle border or gradient line at the bottom of the navbar to separate it from page content.",
-      "files": [
-        "frontend/src/components/Navbar.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-27"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-polish-the-categoryfilter-component-frontend-src-components-categoryfilter-tsx-improve-button-sizing-spacing-and-active-state-styling-so-the-selected-category-is-immediately-obvious-add-a-subtle-hover-state-on-inactive-buttons-ensure-the-filter-bar-wraps-cleanly-on-smaller-screens",
-      "featureTitle": "Polish the CategoryFilter component (frontend/src/components/CategoryFilter.tsx): improve button sizing, spacing, and active state styling so the selected category is immediately obvious; add a subtle hover state on inactive buttons; ensure the filter bar wraps cleanly on smaller screens.",
-      "files": [
-        "frontend/src/components/CategoryFilter.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-28"
+        "REQ-4"
       ],
       "confidence": "high"
     }

@@ -1,280 +1,68 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 17,
-  "summary": "Building 'MultiTiers', a website similar to MC Tiers — a tier-ranking/leaderboard platform for Minecraft players. The tier system is LT5/HT5/LT4/HT4/LT3/HT3/LT2/HT2/LT1/HT1. The leaderboard/tier list shows no entries by default. A Category filter (Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP) is being added to the Tier List and Leaderboard pages, with an 'All' default view. A password-protected Admin/Management area is being added for adding and managing players. A password-gated admin button will be added to the Home page that opens a full admin modal overlay (Add Player form, player list management, all admin features) after entering the correct password.",
+  "projectStateVersion": 3,
+  "summary": "A Minecraft tier list app with an admin panel. Admins can add players by entering their Minecraft username (skin auto-fetched via Mojang API) and remove players from the tier list. The public tier list displays players with their Minecraft skin avatars.",
   "architectural_notes": [
-    "Project name is 'MultiTiers', inspired by MC Tiers — a competitive tier ranking website",
-    "Tier system is LT5/HT5/LT4/HT4/LT3/HT3/LT2/HT2/LT1/HT1 (not S/A/B/C/D)",
-    "Admin area is password-protected with password 65515616151, accessible only after correct password entry"
+    "Minecraft skins are fetched automatically via the Mojang API when a player's username is entered"
   ],
-  "known_issues": [
-    "Backend canister (koqvn-dqaaa-aaaaa-qfjaq-cai) was stopped (IC0508), causing addPlayer and all canister calls to fail"
-  ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-create-a-top-navigation-bar-with-the-multitiers-brand-logo-wordmark-navigation-links-home-leaderboard-tier-list-and-a-search-input-for-filtering-players-entries",
-      "title": "Create a top navigation bar with the 'MultiTiers' brand logo/wordmark, navigation links (Home, Leaderboard, Tier List), and a search input for filtering players/entries.",
-      "reqIds": [
-        "REQ-1"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-build-a-tier-list-page-that-displays-players-entries-grouped-into-tiers-s-a-b-c-and-d-each-tier-row-must-be-visually-distinct-with-a-colored-tier-label-and-contain-player-cards-showing-the-player-name-rank-badge-and-rating-score",
-      "title": "Build a Tier List page that displays players/entries grouped into tiers: S, A, B, C, and D. Each tier row must be visually distinct with a colored tier label and contain player cards showing the player name, rank badge, and rating score.",
+      "id": "feature-update-the-admin-panel-adminpage-tsx-and-or-adminmodal-tsx-so-that-when-a-minecraft-username-is-entered-to-add-a-player-the-frontend-automatically-fetches-the-player-s-skin-avatar-using-the-mojang-api-https-mc-heads-net-avatar-username-or-equivalent-public-endpoint-and-stores-the-resulting-url-as-the-player-s-avatar-the-avatar-preview-should-be-shown-in-the-add-player-form-before-submission",
+      "title": "Update the admin panel (AdminPage.tsx and/or AdminModal.tsx) so that when a Minecraft username is entered to add a player, the frontend automatically fetches the player's skin avatar using the Mojang API (https://mc-heads.net/avatar/{username} or equivalent public endpoint) and stores the resulting URL as the player's avatar. The avatar preview should be shown in the add-player form before submission.",
       "reqIds": [
         "REQ-2"
       ],
       "version": 1
     },
     {
-      "id": "feature-build-a-leaderboard-page-that-displays-a-ranked-table-of-all-players-entries-sorted-by-rating-score-descending-each-row-should-show-position-number-player-name-tier-label-and-rating-score",
-      "title": "Build a Leaderboard page that displays a ranked table of all players/entries sorted by rating score descending. Each row should show position number, player name, tier label, and rating score.",
+      "id": "feature-add-a-remove-player-button-in-the-admin-panel-adminpage-tsx-next-to-each-player-in-the-current-player-list-clicking-it-should-delete-that-player-from-the-backend-and-update-the-displayed-list",
+      "title": "Add a remove player button in the admin panel (AdminPage.tsx) next to each player in the current player list. Clicking it should delete that player from the backend and update the displayed list.",
       "reqIds": [
         "REQ-3"
       ],
       "version": 1
     },
     {
-      "id": "feature-implement-a-search-filter-feature-that-filters-displayed-players-by-name-in-real-time-on-both-the-tier-list-and-leaderboard-views",
-      "title": "Implement a search/filter feature that filters displayed players by name in real time on both the Tier List and Leaderboard views.",
+      "id": "feature-update-the-playercard-component-and-tierrow-tierlistpage-to-display-each-player-s-minecraft-skin-avatar-image-from-the-stored-avatarurl-as-their-profile-picture-instead-of-or-in-addition-to-the-initial-based-avatar-fall-back-to-the-initial-based-avatar-if-no-avatarurl-is-present",
+      "title": "Update the PlayerCard component and TierRow/TierListPage to display each player's Minecraft skin avatar image (from the stored avatarUrl) as their profile picture instead of (or in addition to) the initial-based avatar. Fall back to the initial-based avatar if no avatarUrl is present.",
       "reqIds": [
         "REQ-4"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-apply-a-dark-high-contrast-visual-theme-inspired-by-competitive-gaming-aesthetics-use-a-near-black-background-sharp-typography-bold-uppercase-headings-vivid-accent-colors-for-tier-labels-e-g-gold-for-s-red-for-a-orange-for-b-teal-for-c-grey-for-d-and-subtle-glowing-gradient-effects-on-cards-and-badges-enforce-this-theme-consistently-across-all-pages-and-components",
-      "title": "Apply a dark, high-contrast visual theme inspired by competitive gaming aesthetics. Use a near-black background, sharp typography (bold, uppercase headings), vivid accent colors for tier labels (e.g. gold for S, red for A, orange for B, teal for C, grey for D), and subtle glowing/gradient effects on cards and badges. Enforce this theme consistently across all pages and components.",
-      "reqIds": [
-        "REQ-6"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-render-the-generated-multitiers-logo-banner-image-as-a-static-asset-from-frontend-public-assets-generated-and-display-it-in-the-navigation-bar",
-      "title": "Render the generated MultiTiers logo banner image as a static asset from frontend/public/assets/generated and display it in the navigation bar.",
-      "reqIds": [
-        "REQ-7"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-replace-the-tier-system-throughout-the-entire-codebase-backend-and-frontend-from-s-a-b-c-d-to-the-new-10-tier-system-lt5-ht5-lt4-ht4-lt3-ht3-lt2-ht2-lt1-ht1-update-the-player-type-all-tier-enumerations-tier-config-objects-tier-config-exports-color-mappings-and-any-tier-specific-logic-so-that-the-new-tiers-are-used-exclusively-assign-distinct-vivid-accent-colors-to-each-new-tier-e-g-gradient-from-gold-tones-for-ht1-down-to-grey-blue-for-lt5-consistent-with-the-existing-dark-gaming-theme",
-      "title": "Replace the tier system throughout the entire codebase (backend and frontend) from S/A/B/C/D to the new 10-tier system: LT5, HT5, LT4, HT4, LT3, HT3, LT2, HT2, LT1, HT1. Update the Player type, all tier enumerations, tier config objects, TIER_CONFIG exports, color mappings, and any tier-specific logic so that the new tiers are used exclusively. Assign distinct vivid accent colors to each new tier (e.g. gradient from gold tones for HT1 down to grey-blue for LT5) consistent with the existing dark gaming theme.",
-      "reqIds": [
-        "REQ-8"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-remove-all-pre-seeded-player-data-from-the-backend-so-that-the-tier-list-and-leaderboard-display-an-empty-state-by-default-the-backend-actor-should-initialise-with-zero-players-update-the-homepage-to-show-zero-counts-per-tier-and-an-empty-top-3-preview",
-      "title": "Remove all pre-seeded player data from the backend so that the tier list and leaderboard display an empty state by default. The backend actor should initialise with zero players. Update the HomePage to show zero counts per tier and an empty top-3 preview.",
-      "reqIds": [
-        "REQ-9"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-category-filter-ui-to-the-top-of-both-the-tier-list-page-and-the-leaderboard-page-the-filter-must-display-9-options-all-default-selected-on-load-plus-the-8-categories-sword-axe-crystal-mace-spearmace-diamond-smp-uch-smp-selecting-a-category-filters-the-displayed-players-entries-to-only-those-belonging-to-that-category-in-real-time-selecting-all-shows-all-categories-combined",
-      "title": "Add a Category filter UI to the top of both the Tier List page and the Leaderboard page. The filter must display 9 options: 'All' (default, selected on load) plus the 8 categories: Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UCH, SMP. Selecting a category filters the displayed players/entries to only those belonging to that category in real time. Selecting 'All' shows all categories combined.",
-      "reqIds": [
-        "REQ-11"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-update-the-react-query-hooks-in-usequeries-ts-to-accept-an-optional-category-parameter-and-pass-it-to-the-backend-when-filtering-ensure-the-queries-re-fetch-automatically-when-the-selected-category-changes",
-      "title": "Update the React Query hooks in `useQueries.ts` to accept an optional category parameter and pass it to the backend when filtering. Ensure the queries re-fetch automatically when the selected category changes.",
-      "reqIds": [
-        "REQ-12"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-rename-all-frontend-occurrences-of-the-uch-category-label-to-uhc-update-the-categoryfilter-component-options-array-any-category-mapping-config-objects-display-labels-in-the-tier-list-page-leaderboard-page-and-any-other-component-or-utility-that-references-the-string-uch",
-      "title": "Rename all frontend occurrences of the 'UCH' category label to 'UHC': update the CategoryFilter component options array, any category mapping/config objects, display labels in the Tier List page, Leaderboard page, and any other component or utility that references the string 'UCH'.",
-      "reqIds": [
-        "REQ-14"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-create-a-new-admin-page-at-the-route-admin-file-frontend-src-pages-adminpage-tsx-on-first-visit-or-when-not-authenticated-render-a-full-screen-password-gate-a-centered-card-with-a-password-input-field-and-a-login-button-when-the-user-submits-the-password-65515616151-store-the-authenticated-state-in-react-component-state-or-sessionstorage-and-reveal-the-management-ui-if-the-password-is-wrong-show-an-inline-error-message-include-a-logout-button-in-the-management-ui-that-returns-to-the-password-gate",
-      "title": "Create a new Admin page at the route `/admin` (file `frontend/src/pages/AdminPage.tsx`). On first visit (or when not authenticated), render a full-screen password gate: a centered card with a password input field and a 'Login' button. When the user submits the password `65515616151`, store the authenticated state in React component state (or sessionStorage) and reveal the management UI. If the password is wrong, show an inline error message. Include a 'Logout' button in the management UI that returns to the password gate.",
-      "reqIds": [
-        "REQ-16"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-inside-the-admin-management-ui-shown-after-successful-password-entry-render-an-add-player-form-with-the-following-fields-player-name-text-input-tier-dropdown-select-with-all-10-tiers-lt5-ht5-lt4-ht4-lt3-ht3-lt2-ht2-lt1-ht1-category-dropdown-select-with-all-8-categories-sword-axe-crystal-mace-spearmace-diamond-smp-uhc-smp-and-rating-score-number-input-on-form-submission-call-the-backend-addplayer-function-via-the-react-query-mutation-and-show-a-success-notification-clear-the-form-after-a-successful-submission",
-      "title": "Inside the Admin management UI (shown after successful password entry), render an 'Add Player' form with the following fields: Player Name (text input), Tier (dropdown/select with all 10 tiers: LT5, HT5, LT4, HT4, LT3, HT3, LT2, HT2, LT1, HT1), Category (dropdown/select with all 8 categories: Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP), and Rating Score (number input). On form submission, call the backend `addPlayer` function via the React Query mutation and show a success notification. Clear the form after a successful submission.",
-      "reqIds": [
-        "REQ-17"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-register-the-admin-route-in-frontend-src-app-tsx-tanstack-router-so-that-navigating-to-admin-renders-adminpage-do-not-add-an-admin-link-to-the-shared-navbar-the-admin-area-should-only-be-accessible-by-direct-url",
-      "title": "Register the `/admin` route in `frontend/src/App.tsx` (TanStack Router) so that navigating to `/admin` renders `AdminPage`. Do not add an 'Admin' link to the shared Navbar — the admin area should only be accessible by direct URL.",
-      "reqIds": [
-        "REQ-18"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-on-the-admin-page-frontend-src-pages-adminpage-tsx-inside-the-management-ui-visible-after-successful-login-display-the-full-current-admin-url-as-a-copyable-text-element-derive-the-url-dynamically-using-window-location-origin-admin-render-it-in-a-styled-read-only-input-or-code-block-accompanied-by-a-copy-button-that-copies-the-url-to-the-clipboard-via-the-clipboard-api-and-shows-a-brief-copied-confirmation-feedback-e-g-for-2-seconds-this-element-should-be-clearly-labelled-e-g-admin-url",
-      "title": "On the Admin page (`frontend/src/pages/AdminPage.tsx`), inside the management UI (visible after successful login), display the full current `/admin` URL as a copyable text element. Derive the URL dynamically using `window.location.origin + '/admin'`. Render it in a styled read-only input or code block accompanied by a 'Copy' button that copies the URL to the clipboard via the Clipboard API and shows a brief 'Copied!' confirmation feedback (e.g. for 2 seconds). This element should be clearly labelled, e.g. 'Admin URL'.",
-      "reqIds": [
-        "REQ-19"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-add-a-visible-admin-access-button-on-the-home-page-frontend-src-pages-homepage-tsx-when-clicked-it-opens-a-modal-overlay-that-first-presents-a-password-gate-a-centered-card-with-a-password-input-field-and-a-login-button-when-the-user-submits-the-correct-password-65515616151-store-the-authenticated-state-in-component-state-or-sessionstorage-and-reveal-the-full-admin-management-ui-within-the-same-modal-if-the-password-is-wrong-show-an-inline-error-message-the-modal-must-be-closable-e-g-via-an-x-button-or-clicking-outside-at-any-time",
-      "title": "Add a visible admin access button on the Home page (`frontend/src/pages/HomePage.tsx`). When clicked, it opens a modal overlay that first presents a password gate (a centered card with a password input field and a 'Login' button). When the user submits the correct password `65515616151`, store the authenticated state in component state or sessionStorage and reveal the full admin management UI within the same modal. If the password is wrong, show an inline error message. The modal must be closable (e.g. via an X button or clicking outside) at any time.",
-      "reqIds": [
-        "REQ-20"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-inside-the-admin-modal-overlay-on-the-home-page-render-the-full-admin-management-ui-an-add-player-form-with-fields-for-player-name-text-input-tier-dropdown-with-all-10-tiers-lt5-ht5-lt4-ht4-lt3-ht3-lt2-ht2-lt1-ht1-category-dropdown-with-all-8-categories-sword-axe-crystal-mace-spearmace-diamond-smp-uhc-smp-and-rating-score-number-input-on-form-submission-call-the-backend-addplayer-mutation-show-a-success-notification-and-clear-the-form-also-include-a-player-list-management-section-displaying-all-current-players-with-the-ability-to-delete-individual-players-include-a-logout-button-that-returns-to-the-password-gate-within-the-modal",
-      "title": "Inside the admin modal overlay on the Home page, render the full admin management UI: an 'Add Player' form with fields for Player Name (text input), Tier (dropdown with all 10 tiers: LT5, HT5, LT4, HT4, LT3, HT3, LT2, HT2, LT1, HT1), Category (dropdown with all 8 categories: Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UHC, SMP), and Rating Score (number input). On form submission, call the backend `addPlayer` mutation, show a success notification, and clear the form. Also include a player list management section displaying all current players with the ability to delete individual players. Include a 'Logout' button that returns to the password gate within the modal.",
-      "reqIds": [
-        "REQ-21"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-redesign-the-home-page-frontend-src-pages-homepage-tsx-with-improved-visual-hierarchy-a-more-impactful-hero-section-with-a-prominent-tagline-polished-per-tier-stat-cards-with-glowing-accent-borders-matching-each-tier-color-a-cleaner-top-3-preview-section-with-improved-card-layout-and-better-spacing-and-typography-throughout-ensure-the-admin-access-button-is-clearly-visible-but-visually-integrated-into-the-design",
-      "title": "Redesign the Home page (frontend/src/pages/HomePage.tsx) with improved visual hierarchy: a more impactful hero section with a prominent tagline, polished per-tier stat cards with glowing accent borders matching each tier color, a cleaner top-3 preview section with improved card layout, and better spacing and typography throughout. Ensure the admin access button is clearly visible but visually integrated into the design.",
-      "reqIds": [
-        "REQ-23"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-polish-the-tier-list-page-frontend-src-pages-tierlistpage-tsx-and-tierrow-component-frontend-src-components-tierrow-tsx-improve-the-tier-label-design-with-stronger-glow-gradient-effects-matching-each-tier-s-accent-color-enhance-player-card-layout-in-playercard-tsx-with-better-spacing-and-hover-effects-improve-the-empty-state-message-styling-and-refine-the-category-filter-integration-visually",
-      "title": "Polish the Tier List page (frontend/src/pages/TierListPage.tsx) and TierRow component (frontend/src/components/TierRow.tsx): improve the tier label design with stronger glow/gradient effects matching each tier's accent color, enhance player card layout in PlayerCard.tsx with better spacing and hover effects, improve the empty-state message styling, and refine the category filter integration visually.",
-      "reqIds": [
-        "REQ-24"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-polish-the-leaderboard-page-frontend-src-pages-leaderboardpage-tsx-redesign-the-ranked-table-with-alternating-row-highlights-stronger-rank-number-badges-with-gold-silver-bronze-styling-for-top-3-positions-better-tier-badge-styling-in-each-row-improved-column-headers-hover-effects-on-rows-and-a-polished-empty-state-view-when-no-players-exist",
-      "title": "Polish the Leaderboard page (frontend/src/pages/LeaderboardPage.tsx): redesign the ranked table with alternating row highlights, stronger rank number badges (with gold/silver/bronze styling for top 3 positions), better tier badge styling in each row, improved column headers, hover effects on rows, and a polished empty-state view when no players exist.",
-      "reqIds": [
-        "REQ-25"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-polish-the-adminmodal-component-frontend-src-components-adminmodal-tsx-improve-the-modal-s-visual-design-with-a-more-refined-dark-card-better-form-field-styling-inputs-selects-with-consistent-dark-theme-clearer-success-error-notification-styling-improved-player-list-section-with-better-row-layout-and-delete-button-styling-and-a-more-prominent-logout-button-ensure-the-modal-scrolls-properly-when-the-player-list-is-long",
-      "title": "Polish the AdminModal component (frontend/src/components/AdminModal.tsx): improve the modal's visual design with a more refined dark card, better form field styling (inputs, selects with consistent dark theme), clearer success/error notification styling, improved player list section with better row layout and delete button styling, and a more prominent logout button. Ensure the modal scrolls properly when the player list is long.",
-      "reqIds": [
-        "REQ-26"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-polish-the-navbar-component-frontend-src-components-navbar-tsx-improve-active-link-highlighting-refine-the-search-input-styling-to-match-the-dark-gaming-theme-improve-mobile-menu-appearance-and-add-a-subtle-border-or-gradient-line-at-the-bottom-of-the-navbar-to-separate-it-from-page-content",
-      "title": "Polish the Navbar component (frontend/src/components/Navbar.tsx): improve active link highlighting, refine the search input styling to match the dark gaming theme, improve mobile menu appearance, and add a subtle border or gradient line at the bottom of the navbar to separate it from page content.",
-      "reqIds": [
-        "REQ-27"
-      ],
-      "version": 1
-    },
-    {
-      "id": "feature-polish-the-categoryfilter-component-frontend-src-components-categoryfilter-tsx-improve-button-sizing-spacing-and-active-state-styling-so-the-selected-category-is-immediately-obvious-add-a-subtle-hover-state-on-inactive-buttons-ensure-the-filter-bar-wraps-cleanly-on-smaller-screens",
-      "title": "Polish the CategoryFilter component (frontend/src/components/CategoryFilter.tsx): improve button sizing, spacing, and active state styling so the selected category is immediately obvious; add a subtle hover state on inactive buttons; ensure the filter bar wraps cleanly on smaller screens.",
-      "reqIds": [
-        "REQ-28"
       ],
       "version": 1
     }
   ],
   "new_feature_requests": [
     {
-      "id": "AR-11",
-      "summary": "Replace tier system from S/A/B/C/D to LT5/HT5/LT4/HT4/LT3/HT3/LT2/HT2/LT1/HT1 across all pages and components",
+      "id": "AR-1",
+      "summary": "Admin panel: add players to tier list by Minecraft username with auto-fetched skin via Mojang API",
       "reqIds": [],
       "status": "pending"
     },
     {
-      "id": "AR-12",
-      "summary": "Ensure the tier list and leaderboard display no player entries (empty state) by default",
+      "id": "AR-2",
+      "summary": "Admin panel: remove players from the tier list",
       "reqIds": [],
       "status": "pending"
     },
     {
-      "id": "AR-13",
-      "summary": "Add Category filter (Sword, Axe, Crystal, Mace, Spearmace, Diamond SMP, UCH, SMP) to Tier List and Leaderboard pages, with each player belonging to a category and an 'All' default view showing all categories combined",
+      "id": "AR-3",
+      "summary": "Public tier list displays players with their Minecraft skin profile pictures",
       "reqIds": [],
       "status": "pending"
     },
     {
-      "id": "AR-14",
-      "summary": "Extend the backend Player type to include a `category` field with the following 8 variants: Sword, Axe, Crystal, Mace, Spearmace, DiamondSMP, UCH, SMP. Update the `addPlayer` method signature and all related query/filter methods to support filtering by category. Persist the category value for each player.",
+      "id": "AR-4",
+      "summary": "Update the backend player data model to store an optional Minecraft skin URL (or avatar URL) field alongside existing tier/category/score fields. Update addPlayer and any relevant query methods to include this field.",
       "reqIds": [
-        "REQ-10"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-15",
-      "summary": "Rename category 'UCH' to 'UHC' across frontend labels, backend category variants, filter buttons, and all related logic",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-16",
-      "summary": "Rename the category variant from 'UCH' to 'UHC' in the backend Motoko actor: update the Category type variant tag from `#UCH` to `#UHC`, and update all references to it in player filtering, query methods, and any hardcoded string representations.",
-      "reqIds": [
-        "REQ-13"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-17",
-      "summary": "Create a separate password-protected Admin/Management area (password: 65515616151) with a login gate and a form to add players (name, tier, category, rating score) to the list",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-18",
-      "summary": "Add an `addPlayer` update function to the backend Motoko actor (if not already present) that accepts a player name (Text), tier (Tier variant), category (Category variant), and rating score (Nat), creates a new Player record, inserts it into the player map, and returns the newly created Player.",
-      "reqIds": [
-        "REQ-15"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "AR-19",
-      "summary": "Display the full /admin URL as a clickable, copyable link on the Admin page so users can easily copy and paste it",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-20",
-      "summary": "Add a button on the Home page that, when clicked, prompts for the admin password (65515616151) and opens a full admin modal overlay with Add Player form, player list management, and all admin features — no need to navigate to /admin",
-      "reqIds": [],
-      "status": "pending"
-    },
-    {
-      "id": "AR-21",
-      "summary": "Redeploy the backend Motoko actor with a no-op change (e.g. add or update a comment) to force a fresh canister deployment and bring it out of the stopped state, ensuring all update calls (addPlayer, deletePlayer) and all query calls are operational again.",
-      "reqIds": [
-        "REQ-22"
+        "REQ-1"
       ],
       "status": "pending"
     }
   ],
   "gameProjectType": "none",
-  "projectName": "MultiTiers",
+  "projectName": "Minecraft Tier List",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }
